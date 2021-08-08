@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "928202988040",
+    "project_id": "smartdetectorsystem",
+    "storage_bucket": "smartdetectorsystem.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:928202988040:android:a5f805e0a4434cb0a5cfbd",
+        "android_client_info": {
+          "package_name": "com.nova.smartdetectorsystem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "928202988040-a1o1irejgcf1i41t9taopmjo48pfolnd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nova.smartdetectorsystem",
+            "certificate_hash": "d25e924197dfbfd00ab44889c2d7064587cbb3a0"
+          }
+        },
+        {
+          "client_id": "928202988040-83taivpbhgd0daqik5gqv5cuddl16eob.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjewr8C4rxNEhb4foAxmMW_W9KH9_PZKk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "928202988040-83taivpbhgd0daqik5gqv5cuddl16eob.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
