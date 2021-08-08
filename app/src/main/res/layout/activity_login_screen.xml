@@ -115,6 +115,23 @@
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
+            <Button
+                android:id="@+id/btn_register"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btn_login"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/shape2"
+                android:text="User Register"
+                android:fontFamily="serif"
+                android:onClick="reg_acc"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
         </RelativeLayout>
 
     </ScrollView>

@@ -7,7 +7,7 @@
     android:background="@color/colorPrimary"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".RegisterScreen">
+    tools:context=".ProfileScreen">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -98,6 +98,7 @@
                     android:textColorHint="@color/colorSecondary"
                     android:textSize="20dp"
                     android:padding="10dp"
+                    android:enabled="false"
                     android:fontFamily="serif"
                     android:background="@drawable/shape4"
                     android:drawableLeft="@drawable/ic_email_black_24dp"
@@ -158,6 +159,7 @@
                     android:textColorHint="@color/colorSecondary"
                     android:textSize="20dp"
                     android:background="@drawable/shape4"
+                    android:enabled="false"
                     android:padding="10dp"
                     android:drawableLeft="@drawable/ic_lock_black_24dp"
                     android:drawableTint="@color/colorSecondary"
@@ -180,7 +182,7 @@
                 android:layout_marginTop="16dp"
                 android:background="@drawable/shape2"
                 android:textAllCaps="false"
-                android:text="Create Account"
+                android:text="Edit Account Info"
                 android:textSize="20dp"
                 android:textColor="@color/colorPrimary"
                 android:layout_marginLeft="15dp"

@@ -121,4 +121,10 @@ public class LoginScreenActivity extends AppCompatActivity {
         startActivity(new Intent(LoginScreenActivity.this, AdminLoginScreenActivity.class));
 
     }
+
+    public void reg_acc(View view) {
+
+        startActivity(new Intent(LoginScreenActivity.this, RegisterScreen.class));
+
+    }
 }
