@@ -2,6 +2,6 @@ package com.nova.smartdetectorsystem;
 
 public class AccountInfoClass {
 
-    public String uid="", email="", username="", password="", date="", mobile="", pic="";
+    public String uid="", ssn="", name="", mobile="", email="", address="", age="", pass="", pic="";
 
 }

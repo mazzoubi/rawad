@@ -1,22 +1,17 @@
 package com.nova.smartdetectorsystem;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,8 +20,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class LoginScreenActivity extends AppCompatActivity {
 
@@ -93,25 +86,45 @@ public class LoginScreenActivity extends AppCompatActivity {
                         }
                         else {
 
-                            FirebaseFirestore db = FirebaseFirestore.getInstance();
-                            db.collection("Users")
-                                    .document(auth.getCurrentUser().getUid())
-                                    .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                @Override
-                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if(email.contains("user")){
+                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                db.collection("Users")
+                                        .document(auth.getCurrentUser().getUid())
+                                        .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-                                    SharedPreferences.Editor editor = getSharedPreferences("UserInfo", MODE_PRIVATE).edit();
-                                    editor.putString("username", documentSnapshot.getString("username"));
-                                    editor.putString("mobile", documentSnapshot.getString("mobile"));
-                                    editor.putString("email", documentSnapshot.getString("email"));
-                                    editor.putString("password", documentSnapshot.getString("password"));
-                                    editor.apply();
+                                        SharedPreferences.Editor editor = getSharedPreferences("UserInfo", MODE_PRIVATE).edit();
+                                        editor.putString("email", documentSnapshot.getString("email"));
+                                        editor.putString("password", documentSnapshot.getString("password"));
+                                        editor.apply();
 
-                                    pb.dismiss();
+                                        pb.dismiss();
 
-                                    startActivity(new Intent(LoginScreenActivity.this, MainActivity.class));
-                                    finish(); }
-                            }); }
+                                        startActivity(new Intent(LoginScreenActivity.this, MainActivity.class));
+                                        finish(); }
+                                }); }
+
+                            else if(email.contains("admin")){
+                                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                db.collection("Admin")
+                                        .document(auth.getCurrentUser().getUid())
+                                        .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                                        SharedPreferences.Editor editor = getSharedPreferences("UserInfo", MODE_PRIVATE).edit();
+                                        editor.putString("email", documentSnapshot.getString("email"));
+                                        editor.putString("password", documentSnapshot.getString("password"));
+                                        editor.apply();
+
+                                        pb.dismiss();
+
+                                        startActivity(new Intent(LoginScreenActivity.this, AdminMainActivity.class));
+                                        finish(); }
+                                }); }
+
+                             }
                     }
                 });
     }

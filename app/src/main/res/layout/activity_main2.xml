@@ -1,9 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity2">
+    android:background="#FFFFFF"
+    tools:context=".AdminMainActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="#DCDCDC"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:id="@+id/toolbar"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            app:titleTextColor="@color/colorPrimary"
+            android:background="#ffffff"
+            android:layout_height="wrap_content">
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:id="@+id/lay"
+        android:layout_centerHorizontal="true"
+        app:cardElevation="10dp"
+        android:layout_marginLeft="35dp"
+        android:background="#ffffff"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="15dp"
+        app:cardCornerRadius="25dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="35dp"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_margin="15dp"
+            android:layout_height="match_parent">
+
+            <GridView
+                android:id="@+id/gridViewCustom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:horizontalSpacing="5dp"
+                android:layout_centerVertical="true"
+                android:verticalSpacing="5dp"
+                android:layout_centerHorizontal="true"
+                android:columnWidth="180dp"
+                android:gravity="center"
+                android:numColumns="2" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <com.luseen.spacenavigation.SpaceNavigationView
+        android:id="@+id/space"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        app:centre_button_icon="@drawable/ic_baseline_home_24"
+        app:inactive_centre_button_icon_color="@color/colorPrimary"
+        app:active_item_color="@color/colorPrimary"
+        app:inactive_item_color="@color/colorPrimary"
+        app:space_background_color="#ffffff"
+        app:active_centre_button_icon_color="#ffffff"
+        app:centre_button_color="#ffffff"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"/>
+
+</RelativeLayout>

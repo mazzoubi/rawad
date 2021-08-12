@@ -37,7 +37,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileScreen extends AppCompatActivity {
 
-    EditText inputEmail, inputPassword, inputMobile, inputUsername;
+    EditText inputSSN, inputName, inputMobile, inputEmail, inputAddress, inputAge, inputPassword;
     Button btnSignUp;
     CircleImageView pic;
     ProgressDialog pb;
@@ -53,10 +53,13 @@ public class ProfileScreen extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_profile_screen);
 
-        inputEmail = findViewById(R.id.email);
-        inputPassword = findViewById(R.id.password);
+        inputSSN = findViewById(R.id.ssn);
+        inputName = findViewById(R.id.name);
         inputMobile = findViewById(R.id.mobile);
-        inputUsername = findViewById(R.id.nameField);
+        inputEmail = findViewById(R.id.email);
+        inputAddress = findViewById(R.id.address);
+        inputAge = findViewById(R.id.age);
+        inputPassword = findViewById(R.id.password);
         btnSignUp = findViewById(R.id.sign_up_button);
         pic = findViewById(R.id.img);
         auth = FirebaseAuth.getInstance();
@@ -84,19 +87,28 @@ public class ProfileScreen extends AppCompatActivity {
 
                 pb.show();
 
-                final String email = inputEmail.getText().toString().trim();
-                final String password = inputPassword.getText().toString().trim();
-                final String username = inputUsername.getText().toString().trim();
-                final String mobile = inputMobile.getText().toString().trim();
+                final String SSN = inputSSN.getText().toString().trim();
+                final String Name = inputName.getText().toString().trim();
+                final String Mobile = inputMobile.getText().toString().trim();
+                final String Email = inputEmail.getText().toString().trim();
+                final String Address = inputAddress.getText().toString().trim();
+                final String Age = inputAge.getText().toString().trim();
+                final String Password = inputPassword.getText().toString().trim();
 
-                if(email.equals("") || password.equals("") || username.equals("") || mobile.equals("")){
+                if(SSN.equals("") || Name.equals("") || Mobile.equals("") || Email.equals("")||
+                        Address.equals("") || Age.equals("") || Password.equals("")){
                     Toast.makeText(ProfileScreen.this, "Don't Leave Any Blanks Please.", Toast.LENGTH_SHORT).show();
                     pb.dismiss(); }
 
                 else {
                     Map<String, Object> map = new HashMap<>();
-                    map.put("username", username);
-                    map.put("mobile", mobile);
+                    map.put("ssn", SSN);
+                    map.put("name", Name);
+                    map.put("mobile", Mobile);
+                    map.put("email", Email);
+                    map.put("address", Address);
+                    map.put("age", Age);
+                    map.put("password", Password);
                     map.put("pic", accountInfoClass.pic);
 
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -124,7 +136,7 @@ public class ProfileScreen extends AppCompatActivity {
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Users")
+        db.collection("Admin")
                 .document(auth.getUid())
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -132,10 +144,13 @@ public class ProfileScreen extends AppCompatActivity {
 
                 accountInfoClass = documentSnapshot.toObject(AccountInfoClass.class);
 
-                inputUsername.setText(accountInfoClass.username);
-                inputEmail.setText(accountInfoClass.email);
+                inputSSN.setText(accountInfoClass.ssn);
+                inputName.setText(accountInfoClass.name);
                 inputMobile.setText(accountInfoClass.mobile);
-                inputPassword.setText(accountInfoClass.password);
+                inputEmail.setText(accountInfoClass.email);
+                inputAddress.setText(accountInfoClass.address);
+                inputAge.setText(accountInfoClass.age);
+                inputPassword.setText(accountInfoClass.pass);
 
                 Uri myUri = Uri.parse(accountInfoClass.pic);
                 Picasso.with(ProfileScreen.this).load(myUri).placeholder(R.mipmap.ic_launcher_round).into(pic);

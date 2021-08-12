@@ -4,77 +4,279 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/colorPrimary"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    tools:context=".MainActivity">
+    android:fitsSystemWindows="true"
+    tools:context=".RegisterScreen">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="#DCDCDC"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity">
-
-        <androidx.appcompat.widget.Toolbar
-            android:layout_width="match_parent"
-            android:id="@+id/toolbar"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentTop="true"
-            app:titleTextColor="@color/colorPrimary"
-            android:background="#ffffff"
-            android:layout_height="wrap_content">
-
-        </androidx.appcompat.widget.Toolbar>
+        android:alpha="0.8"
+        android:layout_height="match_parent">
 
     </RelativeLayout>
 
-    <androidx.cardview.widget.CardView
+    <ScrollView
         android:layout_width="match_parent"
-        android:id="@+id/lay"
-        android:layout_centerHorizontal="true"
-        app:cardElevation="10dp"
-        android:layout_marginLeft="35dp"
-        android:background="#ffffff"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="15dp"
-        app:cardCornerRadius="25dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="35dp"
-        android:layout_height="wrap_content">
-
+        android:layout_marginBottom="5dp"
+        android:layout_height="match_parent">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_margin="15dp"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/lay">
 
-            <GridView
-                android:id="@+id/gridViewCustom"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                app:civ_border_width="3dp"
+                android:layout_marginTop="30dp"
+                app:civ_border_color="@color/colorSecondary"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="30dp"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/ic_launcher_round"
+                android:id="@+id/img" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profile Picture"
+                android:id="@+id/title"
+                android:layout_below="@id/img"
+                android:layout_marginTop="-25dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:fontFamily="serif"
+                android:textSize="14dp"
+                android:textColor="@color/colorSecondary"
+                android:layout_centerHorizontal="true"/>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:horizontalSpacing="5dp"
-                android:layout_centerVertical="true"
-                android:verticalSpacing="5dp"
-                android:layout_centerHorizontal="true"
-                android:columnWidth="180dp"
-                android:gravity="center"
-                android:numColumns="2" />
+                android:id="@+id/ssnf"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:hint="Enter SSN Here"
+                android:textColorHint="@color/colorSecondary"
+                android:layout_below="@id/img">
+
+                <EditText
+                    android:id="@+id/ssn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorSecondary"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:fontFamily="serif"
+                    android:background="@drawable/shape4"
+                    android:drawableLeft="@drawable/ic_email_black_24dp"
+                    android:drawableTint="@color/colorSecondary"
+                    android:drawablePadding="5dp"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/colorSecondary" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/namef"
+                android:hint="Enter Name Here"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:textColorHint="@color/colorSecondary"
+                android:layout_below="@id/ssnf">
+
+                <EditText
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorSecondary"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:fontFamily="serif"
+                    android:background="@drawable/shape4"
+                    android:drawableLeft="@drawable/ic_person_black_24dp"
+                    android:drawableTint="@color/colorSecondary"
+                    android:drawablePadding="5dp"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/colorSecondary" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/mobilef"
+                android:hint="Enter Mobile Here"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:textColorHint="@color/colorSecondary"
+                android:layout_below="@id/namef">
+
+                <EditText
+                    android:id="@+id/mobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorSecondary"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:fontFamily="serif"
+                    android:background="@drawable/shape4"
+                    android:drawableLeft="@drawable/ic_phone_black_24dp"
+                    android:drawableTint="@color/colorSecondary"
+                    android:drawablePadding="5dp"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/colorSecondary" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/emailf"
+                android:hint="Enter Email Here"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:textColorHint="@color/colorSecondary"
+                android:layout_below="@id/mobilef">
+
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorSecondary"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:fontFamily="serif"
+                    android:background="@drawable/shape4"
+                    android:drawableLeft="@drawable/ic_email_black_24dp"
+                    android:drawableTint="@color/colorSecondary"
+                    android:drawablePadding="5dp"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/colorSecondary" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/addressf"
+                android:hint="Enter Address Here"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:textColorHint="@color/colorSecondary"
+                android:layout_below="@id/emailf">
+
+                <EditText
+                    android:id="@+id/address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorSecondary"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:fontFamily="serif"
+                    android:background="@drawable/shape4"
+                    android:drawableLeft="@drawable/ic_email_black_24dp"
+                    android:drawableTint="@color/colorSecondary"
+                    android:drawablePadding="5dp"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/colorSecondary" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/agef"
+                android:hint="Enter Age Here"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:textColorHint="@color/colorSecondary"
+                android:layout_below="@id/addressf">
+
+                <EditText
+                    android:id="@+id/age"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorSecondary"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:fontFamily="serif"
+                    android:background="@drawable/shape4"
+                    android:drawableLeft="@drawable/ic_person_black_24dp"
+                    android:drawableTint="@color/colorSecondary"
+                    android:drawablePadding="5dp"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/colorSecondary" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/passf"
+                android:textColorHint="@color/colorSecondary"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_below="@id/agef">
+
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusableInTouchMode="true"
+                    android:hint="Enter Password Here"
+                    android:fontFamily="serif"
+                    android:textColorHint="@color/colorSecondary"
+                    android:textSize="20dp"
+                    android:background="@drawable/shape4"
+                    android:padding="10dp"
+                    android:drawableLeft="@drawable/ic_lock_black_24dp"
+                    android:drawableTint="@color/colorSecondary"
+                    android:drawablePadding="5dp"
+                    android:imeActionId="@+id/login"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/colorSecondary"
+                    tools:ignore="InvalidImeActionId" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/sign_up_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/shape2"
+                android:textAllCaps="false"
+                android:text="Edit Account Info"
+                android:textSize="20dp"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:textStyle="bold"
+                android:layout_below="@id/passf"/>
 
         </RelativeLayout>
 
-    </androidx.cardview.widget.CardView>
-
-    <com.luseen.spacenavigation.SpaceNavigationView
-        android:id="@+id/space"
-        android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        app:centre_button_icon="@drawable/ic_baseline_home_24"
-        app:inactive_centre_button_icon_color="@color/colorPrimary"
-        app:active_item_color="@color/colorPrimary"
-        app:inactive_item_color="@color/colorPrimary"
-        app:space_background_color="#ffffff"
-        app:active_centre_button_icon_color="#ffffff"
-        app:centre_button_color="#ffffff"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom"/>
+    </ScrollView>
 
 </RelativeLayout>

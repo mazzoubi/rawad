@@ -1,22 +1,31 @@
 package com.nova.smartdetectorsystem;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.TokenWatcher;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -29,86 +38,60 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.google.gson.JsonObject;
 import com.luseen.spacenavigation.SpaceItem;
 import com.luseen.spacenavigation.SpaceNavigationView;
 import com.luseen.spacenavigation.SpaceOnClickListener;
+import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
-    public class CustomGridViewAdapter extends BaseAdapter {
+    EditText inputSSN, inputName, inputMobile, inputEmail, inputAddress, inputAge, inputPassword;
+    Button btnSignUp;
+    CircleImageView pic;
+    ProgressDialog pb;
 
-        public Integer[] mThumbIds = {
-                R.drawable.ic_baseline_error_outline_24,
-                R.drawable.ic_baseline_error_outline_24,
-                R.drawable.ic_baseline_error_outline_24,
-                R.drawable.ic_baseline_error_outline_24,
-                R.drawable.ic_baseline_error_outline_24,
-                R.drawable.ic_baseline_error_outline_24
-        };
-
-        public String[] mThumbNames2 = {
-                "Func-1", "Func-2", "Func-3", "Func-4", "Func-5", "Func-6",
-        };
-
-        private Context mContext;
-
-        public CustomGridViewAdapter(Context c) {
-            mContext = c;
-        }
-
-        @Override
-        public int getCount() {
-            return mThumbIds.length;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mThumbIds[position];
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-
-            ViewHolderItem viewHolder;
-
-            if (convertView == null) {
-
-                LayoutInflater inflater = (MainActivity.this).getLayoutInflater();
-                convertView = inflater.inflate(R.layout.row_grid, parent, false);
-
-                viewHolder = new ViewHolderItem();
-                viewHolder.textViewItem = convertView.findViewById(R.id.textView);
-                viewHolder.imageViewItem = convertView.findViewById(R.id.imageView);
-                viewHolder.rel4 = convertView.findViewById(R.id.main_conv);
-
-                convertView.setTag(viewHolder); }
-
-            else
-                viewHolder = (ViewHolderItem) convertView.getTag();
-
-            viewHolder.textViewItem.setText(mThumbNames2[position]);
-            viewHolder.textViewItem.setTag(position);
-            viewHolder.imageViewItem.setBackground(getDrawable(mThumbIds[position]));
-
-            return convertView; }
-
-    }
-
-    static class ViewHolderItem {
-        TextView textViewItem;
-        RelativeLayout rel4;
-        ImageView imageViewItem;
-    }
+    Bitmap bitmap;
+    String DownloadUrl = "";
+    AccountInfoClass accountInfoClass;
+    FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,102 +99,154 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
-        Space(savedInstanceState);
+        inputSSN = findViewById(R.id.ssn);
+        inputName = findViewById(R.id.name);
+        inputMobile = findViewById(R.id.mobile);
+        inputEmail = findViewById(R.id.email);
+        inputAddress = findViewById(R.id.address);
+        inputAge = findViewById(R.id.age);
+        inputPassword = findViewById(R.id.password);
+        btnSignUp = findViewById(R.id.sign_up_button);
+        pic = findViewById(R.id.img);
+        auth = FirebaseAuth.getInstance();
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Smart Detector System");
+        GetUserData();
 
-        GridView gridView = findViewById(R.id.gridViewCustom);
-        gridView.setAdapter(new CustomGridViewAdapter(MainActivity.this));
-        gridView.setBackgroundColor(Color.parseColor("#ffffff"));
-
-    }
-
-    private void Space(Bundle savedInstanceState){
-
-        SpaceNavigationView spaceNavigationView = (SpaceNavigationView) findViewById(R.id.space);
-        spaceNavigationView.initWithSaveInstanceState(savedInstanceState);
-        spaceNavigationView.addSpaceItem(new SpaceItem("Profile", R.drawable.ic_baseline_emoji_people_24));
-        spaceNavigationView.addSpaceItem(new SpaceItem("About", R.drawable.ic_baseline_error_outline_24));
-        spaceNavigationView.setSpaceItemIconSize(100);
-
-        spaceNavigationView.setSpaceOnClickListener(new SpaceOnClickListener() {
+        pic.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCentreButtonClick() {
+            public void onClick(View v) {
 
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1996);
 
             }
+        });
 
+        pb = new ProgressDialog(this);
+        pb.setMessage("Loading, Please Wait...");
+
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(int itemIndex, String itemName) {
+            public void onClick(View v) {
 
-                switch (itemName){
-                    case "Profile":
-                        startActivity(new Intent(MainActivity.this, ProfileScreen.class));
-                        break;
-                    case "About":
-                        new AlertDialog.Builder(MainActivity.this)
-                                .setTitle("About This App")
-                                .setMessage("We have built this application using many libraries such as Firebase, google MLK, and TensorFlow API.\n\n if you want to log out please do so...")
-                                .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                }).setPositiveButton("Logout", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                SharedPreferences.Editor editor = getSharedPreferences("UserInfo", MODE_PRIVATE).edit();
-                                editor.putString("username", "");
-                                editor.putString("mobile", "");
-                                editor.putString("email", "");
-                                editor.putString("password", "");
-                                editor.apply();
+                pb.show();
 
-                                startActivity(new Intent(MainActivity.this, LoginScreenActivity.class));
-                                finish();
+                final String SSN = inputSSN.getText().toString().trim();
+                final String Name = inputName.getText().toString().trim();
+                final String Mobile = inputMobile.getText().toString().trim();
+                final String Email = inputEmail.getText().toString().trim();
+                final String Address = inputAddress.getText().toString().trim();
+                final String Age = inputAge.getText().toString().trim();
+                final String Password = inputPassword.getText().toString().trim();
 
-                            }
-                        }).setCancelable(false).show();
-                        break;
-                }
+                if(SSN.equals("") || Name.equals("") || Mobile.equals("") || Email.equals("")||
+                        Address.equals("") || Age.equals("") || Password.equals("")){
+                    Toast.makeText(MainActivity.this, "Don't Leave Any Blanks Please.", Toast.LENGTH_SHORT).show();
+                    pb.dismiss(); }
 
-            }
+                else {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("ssn", SSN);
+                    map.put("name", Name);
+                    map.put("mobile", Mobile);
+                    map.put("email", Email);
+                    map.put("address", Address);
+                    map.put("age", Age);
+                    map.put("password", Password);
+                    map.put("pic", accountInfoClass.pic);
 
-            @Override
-            public void onItemReselected(int itemIndex, String itemName) {
-                switch (itemName){
-                    case "Profile":
-                        startActivity(new Intent(MainActivity.this, ProfileScreen.class));
-                        break;
-                        case "About":
-                        new AlertDialog.Builder(MainActivity.this)
-                                .setTitle("About This App")
-                                .setMessage("We have built this application using many libraries such as Firebase, google MLK, and TensorFlow API.\n\n if you want to log out please do so...")
-                                .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                }).setPositiveButton("Logout", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                SharedPreferences.Editor editor = getSharedPreferences("UserInfo", MODE_PRIVATE).edit();
-                                editor.putString("username", "");
-                                editor.putString("mobile", "");
-                                editor.putString("email", "");
-                                editor.putString("password", "");
-                                editor.apply();
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    db.collection("Users")
+                            .document(auth.getCurrentUser().getUid())
+                            .update(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
 
-                                startActivity(new Intent(MainActivity.this, LoginScreenActivity.class));
-                                finish();
-
-                            }
-                        }).setCancelable(false).show();
-                        break;
+                            if (!task.isSuccessful())
+                                Toast.makeText(MainActivity.this, "Error, Please Try Again Later.", Toast.LENGTH_SHORT).show();
+                            else{
+                                Toast.makeText(MainActivity.this, "Welcome "+map.get("username")+" Your Account Has Been Updated.", Toast.LENGTH_LONG).show();
+                                recreate(); }
+                        }
+                    });
                 }
             }
         });
+
+    }
+
+    private void GetUserData() {
+
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Admin")
+                .document(auth.getUid())
+                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                accountInfoClass = documentSnapshot.toObject(AccountInfoClass.class);
+
+                inputSSN.setText(accountInfoClass.ssn);
+                inputName.setText(accountInfoClass.name);
+                inputMobile.setText(accountInfoClass.mobile);
+                inputEmail.setText(accountInfoClass.email);
+                inputAddress.setText(accountInfoClass.address);
+                inputAge.setText(accountInfoClass.age);
+                inputPassword.setText(accountInfoClass.pass);
+
+                Uri myUri = Uri.parse(accountInfoClass.pic);
+                Picasso.with(MainActivity.this).load(myUri).placeholder(R.mipmap.ic_launcher_round).into(pic);
+
+            }
+        });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK){
+
+            Toast.makeText(this, "Uploading Image...", Toast.LENGTH_SHORT).show();
+
+            Uri uri = data.getData();
+
+            try { bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri); }
+            catch (IOException e) {}
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 5, baos);
+
+            String path = MediaStore.Images.Media.insertImage(MainActivity.this.getContentResolver(), bitmap, "image"+uri.getLastPathSegment(), null);
+            uri = Uri.parse(path);
+
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+            final StorageReference ImageName =  storageReference.child("image"+classDate.currentTimeAtMs()+uri.getLastPathSegment());
+
+            ImageName.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    ImageName.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+
+                            DownloadUrl = uri.toString();
+                            accountInfoClass.pic = DownloadUrl;
+                            Toast.makeText(MainActivity.this, "Profile Image Uploaded.", Toast.LENGTH_SHORT).show();
+
+                            pic.setImageBitmap(bitmap);
+
+                        }
+                    });
+                }
+            });
+        }
+
     }
 
 }

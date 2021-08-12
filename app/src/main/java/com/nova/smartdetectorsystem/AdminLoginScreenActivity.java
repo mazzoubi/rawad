@@ -105,7 +105,7 @@ public class AdminLoginScreenActivity extends AppCompatActivity {
 
                                     pb.dismiss();
 
-                                    startActivity(new Intent(AdminLoginScreenActivity.this, MainActivity2.class));
+                                    startActivity(new Intent(AdminLoginScreenActivity.this, AdminMainActivity.class));
                                     finish(); }
                             }); }
                     }

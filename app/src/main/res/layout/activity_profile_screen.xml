@@ -7,7 +7,7 @@
     android:background="@color/colorPrimary"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".ProfileScreen">
+    tools:context=".RegisterScreen">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -55,50 +55,20 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/namef"
+                android:id="@+id/ssnf"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:hint="Enter Username Here"
+                android:hint="Enter SSN Here"
                 android:textColorHint="@color/colorSecondary"
                 android:layout_below="@id/img">
 
                 <EditText
-                    android:id="@+id/nameField"
+                    android:id="@+id/ssn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColorHint="@color/colorSecondary"
                     android:textSize="20dp"
                     android:padding="10dp"
-                    android:fontFamily="serif"
-                    android:background="@drawable/shape4"
-                    android:drawableLeft="@drawable/ic_person_black_24dp"
-                    android:drawableTint="@color/colorSecondary"
-                    android:drawablePadding="5dp"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textColor="@color/colorSecondary" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/emailf"
-                android:hint="Enter Email Here"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:textColorHint="@color/colorSecondary"
-                android:layout_below="@id/namef">
-
-                <EditText
-                    android:id="@+id/email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorSecondary"
-                    android:textSize="20dp"
-                    android:padding="10dp"
-                    android:enabled="false"
                     android:fontFamily="serif"
                     android:background="@drawable/shape4"
                     android:drawableLeft="@drawable/ic_email_black_24dp"
@@ -114,12 +84,41 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/namef"
+                android:hint="Enter Name Here"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:textColorHint="@color/colorSecondary"
+                android:layout_below="@id/ssnf">
+
+                <EditText
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorSecondary"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:fontFamily="serif"
+                    android:background="@drawable/shape4"
+                    android:drawableLeft="@drawable/ic_person_black_24dp"
+                    android:drawableTint="@color/colorSecondary"
+                    android:drawablePadding="5dp"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/colorSecondary" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/mobilef"
                 android:hint="Enter Mobile Here"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:textColorHint="@color/colorSecondary"
-                android:layout_below="@id/emailf">
+                android:layout_below="@id/namef">
 
                 <EditText
                     android:id="@+id/mobile"
@@ -133,7 +132,94 @@
                     android:drawableLeft="@drawable/ic_phone_black_24dp"
                     android:drawableTint="@color/colorSecondary"
                     android:drawablePadding="5dp"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/colorSecondary" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/emailf"
+                android:hint="Enter Email Here"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:textColorHint="@color/colorSecondary"
+                android:layout_below="@id/mobilef">
+
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorSecondary"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:fontFamily="serif"
+                    android:background="@drawable/shape4"
+                    android:drawableLeft="@drawable/ic_email_black_24dp"
+                    android:drawableTint="@color/colorSecondary"
+                    android:drawablePadding="5dp"
                     android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/colorSecondary" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/addressf"
+                android:hint="Enter Address Here"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:textColorHint="@color/colorSecondary"
+                android:layout_below="@id/emailf">
+
+                <EditText
+                    android:id="@+id/address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorSecondary"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:fontFamily="serif"
+                    android:background="@drawable/shape4"
+                    android:drawableLeft="@drawable/ic_email_black_24dp"
+                    android:drawableTint="@color/colorSecondary"
+                    android:drawablePadding="5dp"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/colorSecondary" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/agef"
+                android:hint="Enter Age Here"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:textColorHint="@color/colorSecondary"
+                android:layout_below="@id/addressf">
+
+                <EditText
+                    android:id="@+id/age"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/colorSecondary"
+                    android:textSize="20dp"
+                    android:padding="10dp"
+                    android:fontFamily="serif"
+                    android:background="@drawable/shape4"
+                    android:drawableLeft="@drawable/ic_person_black_24dp"
+                    android:drawableTint="@color/colorSecondary"
+                    android:drawablePadding="5dp"
+                    android:inputType="number"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="@color/colorSecondary" />
@@ -147,7 +233,7 @@
                 android:textColorHint="@color/colorSecondary"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:layout_below="@id/mobilef">
+                android:layout_below="@id/agef">
 
                 <EditText
                     android:id="@+id/password"
@@ -159,7 +245,6 @@
                     android:textColorHint="@color/colorSecondary"
                     android:textSize="20dp"
                     android:background="@drawable/shape4"
-                    android:enabled="false"
                     android:padding="10dp"
                     android:drawableLeft="@drawable/ic_lock_black_24dp"
                     android:drawableTint="@color/colorSecondary"
