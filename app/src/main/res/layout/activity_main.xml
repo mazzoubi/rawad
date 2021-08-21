@@ -7,7 +7,7 @@
     android:background="@color/colorPrimary"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".RegisterScreen">
+    tools:context=".MainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -27,10 +27,10 @@
             android:id="@+id/lay">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 app:civ_border_width="3dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="5dp"
                 app:civ_border_color="@color/colorSecondary"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="30dp"
@@ -157,6 +157,7 @@
                     android:textSize="20dp"
                     android:padding="10dp"
                     android:fontFamily="serif"
+                    android:enabled="false"
                     android:background="@drawable/shape4"
                     android:drawableLeft="@drawable/ic_email_black_24dp"
                     android:drawableTint="@color/colorSecondary"
@@ -242,6 +243,7 @@
                     android:focusableInTouchMode="true"
                     android:hint="Enter Password Here"
                     android:fontFamily="serif"
+                    android:enabled="false"
                     android:textColorHint="@color/colorSecondary"
                     android:textSize="20dp"
                     android:background="@drawable/shape4"
@@ -251,7 +253,7 @@
                     android:drawablePadding="5dp"
                     android:imeActionId="@+id/login"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
+                    android:inputType="text"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="@color/colorSecondary"
@@ -264,7 +266,7 @@
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/shape2"
                 android:textAllCaps="false"
                 android:text="Edit Account Info"
@@ -273,7 +275,41 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:textStyle="bold"
-                android:layout_below="@id/passf"/>
+                android:layout_below="@+id/passf"/>
+
+            <Button
+                android:id="@+id/check_up"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/shape2"
+                android:textAllCaps="false"
+                android:text="My Reports"
+                android:onClick="reports"
+                android:textSize="20dp"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:textStyle="bold"
+                android:layout_below="@id/sign_up_button"/>
+
+            <Button
+                android:id="@+id/logout"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/shape2"
+                android:textAllCaps="false"
+                android:text="Logout"
+                android:onClick="logout"
+                android:textSize="20dp"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:textStyle="bold"
+                android:layout_below="@id/check_up"/>
 
         </RelativeLayout>
 

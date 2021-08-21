@@ -150,7 +150,7 @@ public class ProfileScreen extends AppCompatActivity {
                 inputEmail.setText(accountInfoClass.email);
                 inputAddress.setText(accountInfoClass.address);
                 inputAge.setText(accountInfoClass.age);
-                inputPassword.setText(accountInfoClass.pass);
+                inputPassword.setText(accountInfoClass.password);
 
                 Uri myUri = Uri.parse(accountInfoClass.pic);
                 Picasso.with(ProfileScreen.this).load(myUri).placeholder(R.mipmap.ic_launcher_round).into(pic);

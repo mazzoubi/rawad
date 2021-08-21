@@ -151,10 +151,8 @@ public class MainActivity extends AppCompatActivity {
                     map.put("ssn", SSN);
                     map.put("name", Name);
                     map.put("mobile", Mobile);
-                    map.put("email", Email);
                     map.put("address", Address);
                     map.put("age", Age);
-                    map.put("password", Password);
                     map.put("pic", accountInfoClass.pic);
 
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -183,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Admin")
+        db.collection("Users")
                 .document(auth.getUid())
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -197,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
                 inputEmail.setText(accountInfoClass.email);
                 inputAddress.setText(accountInfoClass.address);
                 inputAge.setText(accountInfoClass.age);
-                inputPassword.setText(accountInfoClass.pass);
+                inputPassword.setText(accountInfoClass.password);
 
                 Uri myUri = Uri.parse(accountInfoClass.pic);
                 Picasso.with(MainActivity.this).load(myUri).placeholder(R.mipmap.ic_launcher_round).into(pic);
@@ -249,4 +247,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void reports(View view) {
+
+
+
+    }
+
+    public void logout(View view) {
+
+        startActivity(new Intent(MainActivity.this, LoginScreenActivity.class));
+        finish();
+
+    }
 }
