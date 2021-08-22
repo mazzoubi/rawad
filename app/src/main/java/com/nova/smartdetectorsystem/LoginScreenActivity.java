@@ -88,7 +88,7 @@ public class LoginScreenActivity extends AppCompatActivity {
 
                             if(email.contains("user")){
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                db.collection("Users")
+                                db.collection("Accounts")
                                         .document(auth.getCurrentUser().getUid())
                                         .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                     @Override
@@ -107,7 +107,7 @@ public class LoginScreenActivity extends AppCompatActivity {
 
                             else if(email.contains("admin")){
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                db.collection("Admin")
+                                db.collection("Accounts")
                                         .document(auth.getCurrentUser().getUid())
                                         .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                     @Override
@@ -127,12 +127,6 @@ public class LoginScreenActivity extends AppCompatActivity {
                              }
                     }
                 });
-    }
-
-    public void adminlogin(View view) {
-
-        startActivity(new Intent(LoginScreenActivity.this, AdminLoginScreenActivity.class));
-
     }
 
     public void reg_acc(View view) {

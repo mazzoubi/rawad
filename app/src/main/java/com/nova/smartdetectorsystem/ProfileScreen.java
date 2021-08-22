@@ -112,7 +112,7 @@ public class ProfileScreen extends AppCompatActivity {
                     map.put("pic", accountInfoClass.pic);
 
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    db.collection("Users")
+                    db.collection("Accounts")
                             .document(auth.getCurrentUser().getUid())
                             .update(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -136,7 +136,7 @@ public class ProfileScreen extends AppCompatActivity {
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Admin")
+        db.collection("Accounts")
                 .document(auth.getUid())
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override

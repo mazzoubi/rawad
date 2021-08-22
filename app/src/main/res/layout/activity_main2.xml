@@ -10,8 +10,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="#DCDCDC"
-        android:layout_height="match_parent"
+        android:id="@+id/rel"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
         tools:context=".MainActivity">
 
         <androidx.appcompat.widget.Toolbar
@@ -20,26 +21,133 @@
             android:layout_centerHorizontal="true"
             android:layout_alignParentTop="true"
             app:titleTextColor="@color/colorPrimary"
-            android:background="#ffffff"
+            android:background="#ECECEC"
             android:layout_height="wrap_content">
 
         </androidx.appcompat.widget.Toolbar>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:id="@+id/card"
+            app:cardElevation="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/toolbar"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_marginRight="15dp"
+            android:layout_centerHorizontal="true"
+            app:cardCornerRadius="25dp"
+            android:layout_height="125dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_margin="5dp"
+                android:layout_height="match_parent">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    app:civ_border_width="3dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_alignParentLeft="true"
+                    app:civ_border_color="@color/colorSecondary"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@mipmap/ic_launcher_round"
+                    android:id="@+id/img" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_toRightOf="@+id/img"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="15dp"
+                    android:weightSum="5"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="Name: ID First"
+                        android:id="@+id/name"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:fontFamily="serif"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorSecondary"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="SSN: ID First"
+                        android:id="@+id/ssn"
+                        android:layout_marginTop="5dp"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:fontFamily="serif"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorSecondary"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="Mobile: ID First"
+                        android:id="@+id/mobile"
+                        android:layout_marginTop="5dp"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:fontFamily="serif"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorSecondary"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="Address: ID First"
+                        android:id="@+id/address"
+                        android:layout_marginTop="5dp"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:fontFamily="serif"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorSecondary"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="Age: ID First"
+                        android:id="@+id/age"
+                        android:layout_marginTop="5dp"
+                        android:gravity="left"
+                        android:textStyle="bold"
+                        android:fontFamily="serif"
+                        android:textSize="16dp"
+                        android:textColor="@color/colorSecondary"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
 
     </RelativeLayout>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:id="@+id/lay"
-        android:layout_centerHorizontal="true"
         app:cardElevation="10dp"
-        android:layout_marginLeft="35dp"
+        android:layout_marginLeft="10dp"
         android:background="#ffffff"
-        android:layout_centerInParent="true"
+        android:layout_below="@+id/rel"
         android:layout_marginBottom="15dp"
         app:cardCornerRadius="25dp"
         android:layout_marginTop="15dp"
-        android:layout_marginRight="35dp"
-        android:layout_height="wrap_content">
+        android:layout_marginRight="10dp"
+        android:layout_height="205dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -71,9 +179,9 @@
         app:inactive_centre_button_icon_color="@color/colorPrimary"
         app:active_item_color="@color/colorPrimary"
         app:inactive_item_color="@color/colorPrimary"
-        app:space_background_color="#ffffff"
-        app:active_centre_button_icon_color="#ffffff"
-        app:centre_button_color="#ffffff"
+        app:space_background_color="#ECECEC"
+        app:active_centre_button_icon_color="#ECECEC"
+        app:centre_button_color="#ECECEC"
         android:layout_height="match_parent"
         android:layout_gravity="bottom"/>
 

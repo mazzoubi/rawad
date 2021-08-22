@@ -206,7 +206,7 @@ public class RegisterScreen extends AppCompatActivity {
                                 map.put("create", classDate.date());
 
                                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                db.collection("Users")
+                                db.collection("Accounts")
                                         .document(map.get("uid"))
                                         .set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
@@ -216,7 +216,7 @@ public class RegisterScreen extends AppCompatActivity {
                                             Toast.makeText(RegisterScreen.this, "Error, Please Try Again Later.", Toast.LENGTH_SHORT).show();
                                         else{
                                             new CreateProfileAsyncTask(Name, DownloadUrl).execute();
-                                            Toast.makeText(RegisterScreen.this, "Welcome "+map.get("username")+" Your Account Has Been Created.", Toast.LENGTH_LONG).show();
+                                            Toast.makeText(RegisterScreen.this, "Welcome "+map.get("name")+" Your Account Has Been Created.", Toast.LENGTH_LONG).show();
                                             RegisterScreen.this.finish(); }
                                     }
                                 });

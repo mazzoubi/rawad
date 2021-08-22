@@ -17,6 +17,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
@@ -40,39 +41,121 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.luseen.spacenavigation.SpaceItem;
 import com.luseen.spacenavigation.SpaceNavigationView;
 import com.luseen.spacenavigation.SpaceOnClickListener;
+import com.squareup.picasso.Picasso;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class AdminMainActivity extends AppCompatActivity {
+
+    private class CreateProfileAsyncTask extends AsyncTask<Void, Void, Integer> {
+
+        String name, url;
+        int id;
+
+        public CreateProfileAsyncTask(String name, String url) {
+            this.name = name;
+            this.url = url; }
+
+        @Override
+        protected void onPreExecute() {}
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+
+            id = CreateProfile(name);
+
+            return id; }
+
+        @Override
+        protected void onPostExecute(Integer id) {
+
+            final String api = "https://api.luxand.cloud/subject/"+id;
+            RequestQueue mRequestQue = Volley.newRequestQueue(AdminMainActivity.this);
+
+            final StringRequest stringReq = new StringRequest(Request.Method.POST, api, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    try{
+                        JSONObject obj = new JSONObject(response);
+                        String str = obj.getString("message");
+
+                        new AlertDialog.Builder(AdminMainActivity.this)
+                                .setTitle("Alert")
+                                .setMessage(str)
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).show(); }
+
+                    catch (Exception ex){}
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {}
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> pars = new HashMap<String, String>();
+                    pars.put("Content-Type", "application/x-www-form-urlencoded");
+                    pars.put("token", "ab6820ebe05d47898a36edcec5e3b5b6");
+                    return pars; }
+
+                @Override
+                public Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> pars = new HashMap<String, String>();
+                    pars.put("photo", url);
+                    return pars;
+                }
+            };
+
+            mRequestQue.add(stringReq);
+
+        }
+    }
 
     public class CustomGridViewAdapter extends BaseAdapter {
 
         public Integer[] mThumbIds = {
-                R.drawable.ic_baseline_error_outline_24,
-                R.drawable.ic_baseline_error_outline_24,
-                R.drawable.ic_baseline_error_outline_24,
-                R.drawable.ic_baseline_error_outline_24,
-                R.drawable.ic_baseline_error_outline_24,
-                R.drawable.ic_baseline_error_outline_24
+                R.drawable.ic_person_black_24dp,
+                R.drawable.ic_baseline_assignment_24,
+                R.drawable.ic_baseline_assignment_ind_24,
+                R.drawable.logo
         };
 
         public String[] mThumbNames2 = {
-                "Func-1", "Func-2", "Func-3", "Func-4", "Func-5", "Func-6",
+                "ID Citizen", "Issue Report", "View Reports", "Upload Pictures"
         };
 
         private Context mContext;
@@ -131,11 +214,21 @@ public class AdminMainActivity extends AppCompatActivity {
     }
 
     String pictureImagePath;
+    TextView tvname, tvssn, tvmobile, tvaddress, tvage;
+    AccountInfoClass info;
+    CircleImageView img;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+
+        tvname = findViewById(R.id.name);
+        tvssn = findViewById(R.id.ssn);
+        tvmobile = findViewById(R.id.mobile);
+        tvaddress = findViewById(R.id.address);
+        tvage = findViewById(R.id.age);
+        img = findViewById(R.id.img);
 
         Space(savedInstanceState);
 
@@ -152,15 +245,6 @@ public class AdminMainActivity extends AppCompatActivity {
 
                 switch (position){
                     case 0:
-                        Intent intent = new Intent();
-                        intent.setType("image/*");
-                        intent.setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1996);
-                        break;
-                    case 1:
-                        RecognizeFace("https://firebasestorage.googleapis.com/v0/b/smartdetectorsystem.appspot.com/o/image1628761511118553329?alt=media&token=3ef337d0-65c8-47a8-9bbc-d1b7b4567946");
-                        break;
-                    case 2:
                         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
                         StrictMode.setVmPolicy(builder.build());
 
@@ -193,7 +277,42 @@ public class AdminMainActivity extends AppCompatActivity {
                             ActivityCompat.requestPermissions(AdminMainActivity.this,listPermissionsNeeded.toArray
                                     (new String[listPermissionsNeeded.size()]), 3); }
                         else{
-                            startActivityForResult(cameraIntent, 1997);}
+                            startActivityForResult(cameraIntent, 1996);}
+                        break;
+                    case 3:
+                        StrictMode.VmPolicy.Builder builder2 = new StrictMode.VmPolicy.Builder();
+                        StrictMode.setVmPolicy(builder2.build());
+
+                        pictureImagePath = "";
+                        String timeStamp2 = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                        String imageFileName2 = timeStamp2 + ".jpg";
+                        File storageDir2 = Environment.getExternalStoragePublicDirectory(
+                                Environment.DIRECTORY_PICTURES);
+                        pictureImagePath = storageDir2.getAbsolutePath() + "/" + imageFileName2;
+                        File file2 = new File(pictureImagePath);
+                        Uri outputFileUri2 = Uri.fromFile(file2);
+                        Intent cameraIntent2 = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        cameraIntent2.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri2);
+
+                        int camera2 = ContextCompat.checkSelfPermission(AdminMainActivity.this, Manifest.permission.CAMERA);
+                        int read2 = ContextCompat.checkSelfPermission(AdminMainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE);
+                        int write2 = ContextCompat.checkSelfPermission(AdminMainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+                        ArrayList<String> listPermissionsNeeded2 = new ArrayList<>();
+                        if (camera2 != PackageManager.PERMISSION_GRANTED){
+                            listPermissionsNeeded2.add(Manifest.permission.CAMERA);
+                            ActivityCompat.requestPermissions(AdminMainActivity.this,listPermissionsNeeded2.toArray
+                                    (new String[listPermissionsNeeded2.size()]), 1); }
+                        if (read2 != PackageManager.PERMISSION_GRANTED){
+                            listPermissionsNeeded2.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+                            ActivityCompat.requestPermissions(AdminMainActivity.this,listPermissionsNeeded2.toArray
+                                    (new String[listPermissionsNeeded2.size()]), 2); }
+                        if (write2 != PackageManager.PERMISSION_GRANTED){
+                            listPermissionsNeeded2.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                            ActivityCompat.requestPermissions(AdminMainActivity.this,listPermissionsNeeded2.toArray
+                                    (new String[listPermissionsNeeded2.size()]), 3); }
+                        else{
+                            startActivityForResult(cameraIntent2, 1997);}
                         break;
                 }
 
@@ -207,15 +326,12 @@ public class AdminMainActivity extends AppCompatActivity {
         SpaceNavigationView spaceNavigationView = (SpaceNavigationView) findViewById(R.id.space);
         spaceNavigationView.initWithSaveInstanceState(savedInstanceState);
         spaceNavigationView.addSpaceItem(new SpaceItem("Profile", R.drawable.ic_baseline_emoji_people_24));
-        spaceNavigationView.addSpaceItem(new SpaceItem("About", R.drawable.ic_baseline_error_outline_24));
+        spaceNavigationView.addSpaceItem(new SpaceItem("Exit", R.drawable.ic_baseline_logout_24));
         spaceNavigationView.setSpaceItemIconSize(100);
 
         spaceNavigationView.setSpaceOnClickListener(new SpaceOnClickListener() {
             @Override
-            public void onCentreButtonClick() {
-
-
-            }
+            public void onCentreButtonClick() {}
 
             @Override
             public void onItemClick(int itemIndex, String itemName) {
@@ -225,29 +341,8 @@ public class AdminMainActivity extends AppCompatActivity {
                         startActivity(new Intent(AdminMainActivity.this, ProfileScreen.class));
                         break;
                     case "About":
-                        new AlertDialog.Builder(AdminMainActivity.this)
-                                .setTitle("About This App")
-                                .setMessage("We have built this application using many libraries such as Firebase, google MLK, and TensorFlow API.\n\n if you want to log out please do so...")
-                                .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                }).setPositiveButton("Logout", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                SharedPreferences.Editor editor = getSharedPreferences("UserInfo", MODE_PRIVATE).edit();
-                                editor.putString("username", "");
-                                editor.putString("mobile", "");
-                                editor.putString("email", "");
-                                editor.putString("password", "");
-                                editor.apply();
-
-                                startActivity(new Intent(AdminMainActivity.this, LoginScreenActivity.class));
-                                finish();
-
-                            }
-                        }).setCancelable(false).show();
+                        startActivity(new Intent(AdminMainActivity.this, LoginScreenActivity.class));
+                        finish();
                         break;
                 }
 
@@ -260,27 +355,8 @@ public class AdminMainActivity extends AppCompatActivity {
                         startActivity(new Intent(AdminMainActivity.this, ProfileScreen.class));
                         break;
                     case "About":
-                        new AlertDialog.Builder(AdminMainActivity.this)
-                                .setTitle("About This App")
-                                .setMessage("We have built this application using many libraries such as Firebase, google MLK, and TensorFlow API.\n\n if you want to log out please do so...")
-                                .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                }).setPositiveButton("Logout", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                SharedPreferences.Editor editor = getSharedPreferences("UserInfo", MODE_PRIVATE).edit();
-                                editor.putString("email", "");
-                                editor.putString("password", "");
-                                editor.apply();
-
-                                startActivity(new Intent(AdminMainActivity.this, LoginScreenActivity.class));
-                                finish();
-
-                            }
-                        }).setCancelable(false).show();
+                        startActivity(new Intent(AdminMainActivity.this, LoginScreenActivity.class));
+                        finish();
                         break;
                 }
             }
@@ -293,7 +369,7 @@ public class AdminMainActivity extends AppCompatActivity {
 
         if(resultCode == RESULT_OK){
 
-            if(requestCode == 1997){
+            if(requestCode == 1996){
 
                 Toast.makeText(this, "جاري تحميل الصورة...", Toast.LENGTH_SHORT).show();
 
@@ -301,7 +377,7 @@ public class AdminMainActivity extends AppCompatActivity {
                 final Bitmap imageBitmap = decodeFile(imgFile);
 
                 ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 5, bytes);
+                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
                 String path = MediaStore.Images.Media.insertImage(AdminMainActivity.this.getContentResolver(), imageBitmap, "Title", null);
 
                 Uri uri = Uri.parse(path);
@@ -324,7 +400,7 @@ public class AdminMainActivity extends AppCompatActivity {
                 });
 
             }
-            else {
+            else if(requestCode == 1997){
                 Toast.makeText(this, "Uploading Image...", Toast.LENGTH_SHORT).show();
 
                 Uri uri = data.getData();
@@ -349,8 +425,7 @@ public class AdminMainActivity extends AppCompatActivity {
                             public void onSuccess(Uri uri) {
 
                                 String DownloadUrl = uri.toString();
-
-
+                                new CreateProfileAsyncTask(tvname.getText().toString().replaceAll("Name: ", ""), DownloadUrl).execute();
 
                             }
                         });
@@ -377,15 +452,32 @@ public class AdminMainActivity extends AppCompatActivity {
                             .replaceAll(", ", "")
                             .replaceAll("\"", "");
 
-                    new AlertDialog.Builder(AdminMainActivity.this)
-                            .setTitle("Alert")
-                            .setMessage(name)
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            }).show(); }
+                    FirebaseFirestore.getInstance()
+                            .collection("Accounts")
+                            .whereEqualTo("name", name)
+                            .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                            try{
+                                List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                                info = list.get(0).toObject(AccountInfoClass.class);
+
+                                tvname.setText("Name: "+info.name);
+                                tvssn.setText("SSN: "+info.ssn);
+                                tvmobile.setText("Mobile: "+info.mobile);
+                                tvaddress.setText("Address: "+info.address);
+                                tvage.setText("Age: "+info.age);
+
+                                Uri myUri = Uri.parse(info.pic);
+                                Picasso.with(AdminMainActivity.this).load(myUri).placeholder(R.mipmap.ic_launcher_round).into(img);
+
+                            }
+                            catch (Exception ex){
+                                Toast.makeText(AdminMainActivity.this, "could not find "+name+" in the data base", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }); }
 
                 catch (Exception ex){
                     new AlertDialog.Builder(AdminMainActivity.this)
@@ -457,6 +549,58 @@ public class AdminMainActivity extends AppCompatActivity {
             return BitmapFactory.decodeStream(new FileInputStream(f), null, o2);
         } catch (FileNotFoundException e) {}
         return null;
+
+    }
+
+    public int CreateProfile(String name){
+
+        String jsonInputString = "";
+        try {
+            URL url = new URL("https://api.luxand.cloud/subject");
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("token", "ab6820ebe05d47898a36edcec5e3b5b6");
+            con.setRequestProperty("Content-Type", "application/json");
+            con.setRequestProperty("Accept", "application/json");
+            con.setDoOutput(true);
+            con.setDoInput(true);
+            con.setUseCaches(false);
+
+            jsonInputString = "";
+            jsonInputString+="{\n";
+            jsonInputString+="\"name\":\""+name+"\"\n";
+            jsonInputString+="}";
+
+            try (OutputStream os = con.getOutputStream()) {
+                byte[] input = jsonInputString.getBytes("utf-8");
+                os.write(input, 0, input.length); }
+
+            int status = con.getResponseCode();
+
+            if (status > 400) {
+                try (BufferedReader br = new BufferedReader(
+                        new InputStreamReader(con.getErrorStream(), "utf-8"))) {
+                    StringBuilder response = new StringBuilder();
+                    String responseLine = null;
+                    while ((responseLine = br.readLine()) != null)
+                        response.append(responseLine.trim());
+                    return 0; }
+            }
+            else {
+                try (BufferedReader br = new BufferedReader(
+                        new InputStreamReader(con.getInputStream(), "utf-8"))) {
+                    StringBuilder response = new StringBuilder();
+                    String responseLine = null;
+                    while ((responseLine = br.readLine()) != null)
+                        response.append(responseLine.trim());
+
+                    JSONObject obj = new JSONObject(response.toString());
+                    String id = obj.getString("id");
+
+                    return Integer.parseInt(id); }
+            }
+        }
+        catch (Exception e) { return 0; }
 
     }
 

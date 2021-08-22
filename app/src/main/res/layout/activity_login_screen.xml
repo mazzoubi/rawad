@@ -108,7 +108,7 @@
                 android:layout_below="@id/passf"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/shape2"
-                android:text="User Login"
+                android:text="Login"
                 android:fontFamily="serif"
                 android:textAllCaps="false"
                 android:textColor="@color/colorPrimary"
@@ -124,7 +124,7 @@
                 android:layout_below="@id/btn_login"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/shape2"
-                android:text="User Register"
+                android:text="Register"
                 android:fontFamily="serif"
                 android:onClick="reg_acc"
                 android:textAllCaps="false"
@@ -135,23 +135,5 @@
         </RelativeLayout>
 
     </ScrollView>
-
-    <Button
-        android:id="@+id/btn_admin"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="15dp"
-        android:layout_marginTop="15dp"
-        android:onClick="adminlogin"
-        android:background="@drawable/shape2"
-        android:text="Administrator Login"
-        android:fontFamily="serif"
-        android:textAllCaps="false"
-        android:textColor="@color/colorPrimary"
-        android:textSize="20dp"
-        android:textStyle="bold" />
 
 </RelativeLayout>

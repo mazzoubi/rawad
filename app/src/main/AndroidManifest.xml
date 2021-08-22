@@ -23,7 +23,6 @@
         <activity android:name=".ProfileScreen" />
         <activity android:name=".LoginScreenActivity" />
         <activity android:name=".RegisterScreen" />
-        <activity android:name=".AdminLoginScreenActivity" />
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
