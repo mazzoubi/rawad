@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:id="@+id/tool"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
+        android:layout_height="125dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_marginRight="15dp"
+            android:layout_height="match_parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="80dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:id="@+id/logo2"
+                app:civ_border_color="@color/colorPrimary"
+                android:src="@drawable/logo"
+                android:layout_height="80dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:textSize="18dp"
+                android:fontFamily="serif"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="5dp"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:textColor="#ffffff"
+                android:text="Edit Taken Vaccine Type"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <EditText
+        android:id="@+id/vaccine"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/tool"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/shape5"
+        android:gravity="center"
+        android:hint="Vaccine Type"
+        android:inputType="text"
+        android:textColor="#000000"
+        android:textColorHint="@color/colorPrimary" />
+
+    <Button
+        android:id="@+id/send"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:textColor="#ffffff"
+        android:layout_marginTop="5dp"
+        android:textSize="24dp"
+        android:layout_below="@+id/vaccine"
+        android:textStyle="bold"
+        android:fontFamily="serif"
+        android:textAllCaps="false"
+        android:layout_marginBottom="5dp"
+        android:text="Save"
+        android:background="@drawable/shape" />
+
+</RelativeLayout>

@@ -1,5 +1,6 @@
 package com.nova.smartdetectorsystem;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,10 +27,16 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,7 +48,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -151,11 +161,11 @@ public class AdminMainActivity extends AppCompatActivity {
                 R.drawable.ic_person_black_24dp,
                 R.drawable.ic_baseline_assignment_24,
                 R.drawable.ic_baseline_assignment_ind_24,
-                R.drawable.logo
+                R.drawable.logo, R.drawable.ic_baseline_coronavirus_24
         };
 
         public String[] mThumbNames2 = {
-                "ID Citizen", "Issue Report", "View Reports", "Upload Pictures"
+                "ID Citizen", "Issue Report", "View Reports", "Upload Pictures", "Vaccination"
         };
 
         private Context mContext;
@@ -279,6 +289,131 @@ public class AdminMainActivity extends AppCompatActivity {
                         else{
                             startActivityForResult(cameraIntent, 1996);}
                         break;
+                    case 1:
+                        final AlertDialog.Builder builder4 = new AlertDialog.Builder((AdminMainActivity.this));
+                        LayoutInflater inflater4 = (AdminMainActivity.this).getLayoutInflater();
+                        builder4.setView(inflater4.inflate(R.layout.dialog_issue_report, null));
+                        final AlertDialog dialog4 = builder4.create();
+                        ((FrameLayout) dialog4.getWindow().getDecorView().findViewById(android.R.id.content)).setForeground(new ColorDrawable(Color.TRANSPARENT));
+                        WindowManager.LayoutParams lp4 = new WindowManager.LayoutParams();
+                        lp4.copyFrom(dialog4.getWindow().getAttributes());
+                        lp4.width = WindowManager.LayoutParams.WRAP_CONTENT;
+                        lp4.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+                        dialog4.show();
+                        dialog4.getWindow().setAttributes(lp4);
+                        dialog4.setCanceledOnTouchOutside(false);
+
+                        final EditText edt2 = dialog4.findViewById(R.id.date);
+                        edt2.setText(classDate.date());
+                        final EditText edt3 = dialog4.findViewById(R.id.time);
+                        edt3.setText(classDate.time());
+                        final EditText edt4 = dialog4.findViewById(R.id.resp_emp);
+                        edt4.setText(getSharedPreferences("UserInfo", MODE_PRIVATE).getString("email", "-"));
+                        final EditText edt5 = dialog4.findViewById(R.id.report);
+                        final Button btn2 = dialog4.findViewById(R.id.send);
+
+                        btn2.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                Map<String, String> map = new HashMap<>();
+                                map.put("date", edt2.getText().toString());
+                                map.put("time", edt3.getText().toString());
+                                map.put("resp_emp", edt4.getText().toString());
+                                map.put("report", edt5.getText().toString());
+                                map.put("report_id", classDate.currentTimeAtMs());
+                                map.put("uid", info.uid);
+
+                                FirebaseFirestore.getInstance()
+                                        .collection("Reports")
+                                        .document(map.get("report_id"))
+                                        .set(map)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                Toast.makeText(AdminMainActivity.this, "Report Issued Successfully", Toast.LENGTH_SHORT).show();
+                                                dialog4.dismiss();
+                                            }
+                                        });
+
+                            }
+                        });
+                        break;
+                    case 2:
+                        FirebaseFirestore.getInstance()
+                                .collection("Reports")
+                                .whereEqualTo("uid", info.uid)
+                                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            @Override
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                                List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                                ArrayList<ReportClass> reports = new ArrayList<>();
+                                ArrayList<String> titles = new ArrayList<>();
+
+                                for(int i=0; i<list.size(); i++){
+                                    reports.add(list.get(i).toObject(ReportClass.class));
+                                    titles.add(list.get(i).toObject(ReportClass.class).date+" | "+list.get(i).toObject(ReportClass.class).time); }
+
+                                if(!reports.isEmpty()){
+                                    ListView listView = new ListView(AdminMainActivity.this);
+                                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(AdminMainActivity.this, android.R.layout.simple_list_item_1, titles);
+                                    listView.setAdapter(adapter);
+
+                                    new AlertDialog.Builder(AdminMainActivity.this)
+                                            .setView(listView)
+                                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                }
+                                            })
+                                            .show();
+
+                                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                                            final AlertDialog.Builder builder4 = new AlertDialog.Builder((AdminMainActivity.this));
+                                            LayoutInflater inflater4 = (AdminMainActivity.this).getLayoutInflater();
+                                            builder4.setView(inflater4.inflate(R.layout.dialog_issue_report2, null));
+                                            final AlertDialog dialog4 = builder4.create();
+                                            ((FrameLayout) dialog4.getWindow().getDecorView().findViewById(android.R.id.content)).setForeground(new ColorDrawable(Color.TRANSPARENT));
+                                            WindowManager.LayoutParams lp4 = new WindowManager.LayoutParams();
+                                            lp4.copyFrom(dialog4.getWindow().getAttributes());
+                                            lp4.width = WindowManager.LayoutParams.WRAP_CONTENT;
+                                            lp4.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+                                            dialog4.show();
+                                            dialog4.getWindow().setAttributes(lp4);
+                                            dialog4.setCanceledOnTouchOutside(false);
+
+                                            final EditText edt2 = dialog4.findViewById(R.id.date);
+                                            edt2.setText(reports.get(position).date);
+                                            final EditText edt3 = dialog4.findViewById(R.id.time);
+                                            edt3.setText(reports.get(position).time);
+                                            final EditText edt4 = dialog4.findViewById(R.id.resp_emp);
+                                            edt4.setText(reports.get(position).resp_emp);
+                                            final EditText edt5 = dialog4.findViewById(R.id.report);
+                                            edt5.setText(reports.get(position).report);
+                                            edt5.setEnabled(false);
+
+                                            final Button close = dialog4.findViewById(R.id.send);
+                                            close.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    dialog4.dismiss();
+                                                }
+                                            });
+
+                                        }
+                                    });
+
+                                }
+                            }
+                        });
+                        break;
                     case 3:
                         StrictMode.VmPolicy.Builder builder2 = new StrictMode.VmPolicy.Builder();
                         StrictMode.setVmPolicy(builder2.build());
@@ -314,6 +449,44 @@ public class AdminMainActivity extends AppCompatActivity {
                         else{
                             startActivityForResult(cameraIntent2, 1997);}
                         break;
+                    case 4:
+                        final AlertDialog.Builder builder3 = new AlertDialog.Builder((AdminMainActivity.this));
+                        LayoutInflater inflater3 = (AdminMainActivity.this).getLayoutInflater();
+                        builder3.setView(inflater3.inflate(R.layout.dialo_vaccine, null));
+                        final AlertDialog dialog3 = builder3.create();
+                        ((FrameLayout) dialog3.getWindow().getDecorView().findViewById(android.R.id.content)).setForeground(new ColorDrawable(Color.TRANSPARENT));
+                        WindowManager.LayoutParams lp3 = new WindowManager.LayoutParams();
+                        lp3.copyFrom(dialog3.getWindow().getAttributes());
+                        lp3.width = WindowManager.LayoutParams.WRAP_CONTENT;
+                        lp3.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+                        dialog3.show();
+                        dialog3.getWindow().setAttributes(lp3);
+                        dialog3.setCanceledOnTouchOutside(false);
+
+                        final EditText edt = dialog3.findViewById(R.id.vaccine);
+                        final Button btn = dialog3.findViewById(R.id.send);
+
+                        btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                FirebaseFirestore.getInstance()
+                                        .collection("Accounts")
+                                        .document(info.uid)
+                                        .update("vaccine", edt.getText().toString())
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        tvaddress.setText("Vaccine: "+edt.getText().toString());
+                                        Toast.makeText(AdminMainActivity.this, "Vaccine Type Changed Successfully", Toast.LENGTH_SHORT).show();
+                                        dialog3.dismiss();
+                                    }
+                                });
+
+                            }
+                        });
+                        break;
                 }
 
             }
@@ -340,7 +513,7 @@ public class AdminMainActivity extends AppCompatActivity {
                     case "Profile":
                         startActivity(new Intent(AdminMainActivity.this, ProfileScreen.class));
                         break;
-                    case "About":
+                    case "Exit":
                         startActivity(new Intent(AdminMainActivity.this, LoginScreenActivity.class));
                         finish();
                         break;
@@ -354,7 +527,7 @@ public class AdminMainActivity extends AppCompatActivity {
                     case "Profile":
                         startActivity(new Intent(AdminMainActivity.this, ProfileScreen.class));
                         break;
-                    case "About":
+                    case "Exit":
                         startActivity(new Intent(AdminMainActivity.this, LoginScreenActivity.class));
                         finish();
                         break;
@@ -466,7 +639,7 @@ public class AdminMainActivity extends AppCompatActivity {
                                 tvname.setText("Name: "+info.name);
                                 tvssn.setText("SSN: "+info.ssn);
                                 tvmobile.setText("Mobile: "+info.mobile);
-                                tvaddress.setText("Address: "+info.address);
+                                tvaddress.setText("Vaccine: "+info.vaccine);
                                 tvage.setText("Age: "+info.age);
 
                                 Uri myUri = Uri.parse(info.pic);

@@ -200,6 +200,7 @@ public class RegisterScreen extends AppCompatActivity {
                                 map.put("email", Email);
                                 map.put("address", Address);
                                 map.put("age", Age);
+                                map.put("vaccine", "none");
                                 map.put("password", Password);
                                 map.put("uid", auth.getUid());
                                 map.put("pic", DownloadUrl);

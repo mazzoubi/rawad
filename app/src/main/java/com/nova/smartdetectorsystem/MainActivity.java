@@ -33,6 +33,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -53,6 +54,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -76,6 +78,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -83,7 +86,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText inputSSN, inputName, inputMobile, inputEmail, inputAddress, inputAge, inputPassword;
+    EditText inputSSN, inputName, inputMobile, inputEmail,
+            inputAddress, inputAge, inputPassword, inpuVaccine;
     Button btnSignUp;
     CircleImageView pic;
     ProgressDialog pb;
@@ -105,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         inputEmail = findViewById(R.id.email);
         inputAddress = findViewById(R.id.address);
         inputAge = findViewById(R.id.age);
+        inpuVaccine = findViewById(R.id.vaccine);
         inputPassword = findViewById(R.id.password);
         btnSignUp = findViewById(R.id.sign_up_button);
         pic = findViewById(R.id.img);
@@ -195,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
                 inputEmail.setText(accountInfoClass.email);
                 inputAddress.setText(accountInfoClass.address);
                 inputAge.setText(accountInfoClass.age);
+                inpuVaccine.setText(accountInfoClass.vaccine);
                 inputPassword.setText(accountInfoClass.password);
 
                 Uri myUri = Uri.parse(accountInfoClass.pic);
@@ -249,7 +255,79 @@ public class MainActivity extends AppCompatActivity {
 
     public void reports(View view) {
 
+        FirebaseFirestore.getInstance()
+                .collection("Reports")
+                .whereEqualTo("uid", auth.getCurrentUser().getUid())
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
+                List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                ArrayList<ReportClass> reports = new ArrayList<>();
+                ArrayList<String> titles = new ArrayList<>();
+
+                for(int i=0; i<list.size(); i++){
+                    reports.add(list.get(i).toObject(ReportClass.class));
+                    titles.add(list.get(i).toObject(ReportClass.class).date+" | "+list.get(i).toObject(ReportClass.class).time); }
+
+                if(!reports.isEmpty()){
+                    ListView listView = new ListView(MainActivity.this);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, titles);
+                    listView.setAdapter(adapter);
+
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setView(listView)
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .show();
+
+
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                            final AlertDialog.Builder builder4 = new AlertDialog.Builder((MainActivity.this));
+                            LayoutInflater inflater4 = (MainActivity.this).getLayoutInflater();
+                            builder4.setView(inflater4.inflate(R.layout.dialog_issue_report2, null));
+                            final AlertDialog dialog4 = builder4.create();
+                            ((FrameLayout) dialog4.getWindow().getDecorView().findViewById(android.R.id.content)).setForeground(new ColorDrawable(Color.TRANSPARENT));
+                            WindowManager.LayoutParams lp4 = new WindowManager.LayoutParams();
+                            lp4.copyFrom(dialog4.getWindow().getAttributes());
+                            lp4.width = WindowManager.LayoutParams.WRAP_CONTENT;
+                            lp4.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+                            dialog4.show();
+                            dialog4.getWindow().setAttributes(lp4);
+                            dialog4.setCanceledOnTouchOutside(false);
+
+                            final EditText edt2 = dialog4.findViewById(R.id.date);
+                            edt2.setText(reports.get(position).date);
+                            final EditText edt3 = dialog4.findViewById(R.id.time);
+                            edt3.setText(reports.get(position).time);
+                            final EditText edt4 = dialog4.findViewById(R.id.resp_emp);
+                            edt4.setText(reports.get(position).resp_emp);
+                            final EditText edt5 = dialog4.findViewById(R.id.report);
+                            edt5.setText(reports.get(position).report);
+                            edt5.setEnabled(false);
+
+                            final Button close = dialog4.findViewById(R.id.send);
+                            close.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialog4.dismiss();
+                                }
+                            });
+
+                        }
+                    });
+
+                }
+            }
+        });
 
     }
 

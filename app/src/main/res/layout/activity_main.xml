@@ -230,11 +230,45 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/passf"
+                android:id="@+id/vaccinef"
                 android:textColorHint="@color/colorSecondary"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_below="@id/agef">
+
+                <EditText
+                    android:id="@+id/vaccine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusableInTouchMode="true"
+                    android:hint="Enter Vaccine Here"
+                    android:fontFamily="serif"
+                    android:enabled="false"
+                    android:textColorHint="@color/colorSecondary"
+                    android:textSize="20dp"
+                    android:background="@drawable/shape4"
+                    android:padding="10dp"
+                    android:drawableLeft="@drawable/ic_baseline_coronavirus_24"
+                    android:drawableTint="@color/colorSecondary"
+                    android:drawablePadding="5dp"
+                    android:imeActionId="@+id/login"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/colorSecondary"
+                    tools:ignore="InvalidImeActionId" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/passf"
+                android:textColorHint="@color/colorSecondary"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_below="@id/vaccinef">
 
                 <EditText
                     android:id="@+id/password"

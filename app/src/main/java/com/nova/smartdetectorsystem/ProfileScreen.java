@@ -37,7 +37,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileScreen extends AppCompatActivity {
 
-    EditText inputSSN, inputName, inputMobile, inputEmail, inputAddress, inputAge, inputPassword;
+    EditText inputSSN, inputName, inputMobile, inputEmail,
+            inputAddress, inputAge, inputPassword, inputVaccine;
     Button btnSignUp;
     CircleImageView pic;
     ProgressDialog pb;
@@ -59,6 +60,7 @@ public class ProfileScreen extends AppCompatActivity {
         inputEmail = findViewById(R.id.email);
         inputAddress = findViewById(R.id.address);
         inputAge = findViewById(R.id.age);
+        inputVaccine = findViewById(R.id.vaccine);
         inputPassword = findViewById(R.id.password);
         btnSignUp = findViewById(R.id.sign_up_button);
         pic = findViewById(R.id.img);
@@ -150,6 +152,7 @@ public class ProfileScreen extends AppCompatActivity {
                 inputEmail.setText(accountInfoClass.email);
                 inputAddress.setText(accountInfoClass.address);
                 inputAge.setText(accountInfoClass.age);
+                inputVaccine.setText(accountInfoClass.vaccine);
                 inputPassword.setText(accountInfoClass.password);
 
                 Uri myUri = Uri.parse(accountInfoClass.pic);

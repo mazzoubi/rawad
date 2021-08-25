@@ -106,7 +106,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:text="Address: ID First"
+                        android:text="Vaccine: ID First"
                         android:id="@+id/address"
                         android:layout_marginTop="5dp"
                         android:gravity="left"
@@ -147,7 +147,7 @@
         app:cardCornerRadius="25dp"
         android:layout_marginTop="15dp"
         android:layout_marginRight="10dp"
-        android:layout_height="205dp">
+        android:layout_height="308dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
