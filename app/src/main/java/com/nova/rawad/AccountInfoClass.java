@@ -1,4 +1,4 @@
-package com.nova.smartdetectorsystem;
+package com.nova.rawad;
 
 public class AccountInfoClass {
 

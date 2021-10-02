@@ -1,4 +1,4 @@
-package com.nova.smartdetectorsystem;
+package com.nova.rawad;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -11,9 +11,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;

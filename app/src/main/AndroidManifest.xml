@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.nova.smartdetectorsystem">
+    package="com.nova.rawad">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -18,12 +18,12 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AdminMainActivity"/>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".ProfileScreen" />
-        <activity android:name=".LoginScreenActivity" />
-        <activity android:name=".RegisterScreen" />
-        <activity android:name=".SplashScreenActivity">
+        <activity android:name="com.nova.rawad.AdminMainActivity"/>
+        <activity android:name="com.nova.rawad.MainActivity" />
+        <activity android:name="com.nova.rawad.ProfileScreen" />
+        <activity android:name="com.nova.rawad.LoginScreenActivity" />
+        <activity android:name="com.nova.rawad.RegisterScreen" />
+        <activity android:name="com.nova.rawad.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

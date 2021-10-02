@@ -1,4 +1,4 @@
-package com.nova.smartdetectorsystem;
+package com.nova.rawad;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import render.animations.Attention;
 import render.animations.Render;
 

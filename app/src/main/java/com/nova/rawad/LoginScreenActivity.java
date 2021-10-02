@@ -1,4 +1,4 @@
-package com.nova.smartdetectorsystem;
+package com.nova.rawad;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
