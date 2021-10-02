@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Users.newRegisterActivity">
+
+    <EditText
+        android:id="@+id/edtFullName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="170dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/shape4"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="الإسم الكامل من ثلاث مقاطع"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:textSize="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/edtPhone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/shape4"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="رقم الهاتف مسبوق برمز الدولة +962"
+        android:inputType="phone"
+        android:minHeight="48dp"
+        android:textSize="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/edtFullName"
+        app:layout_constraintStart_toStartOf="@+id/edtFullName"
+        app:layout_constraintTop_toBottomOf="@+id/edtFullName" />
+
+    <EditText
+        android:id="@+id/edtPassword"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/shape4"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="كلمة المرور"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:textSize="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/edtPhone"
+        app:layout_constraintStart_toStartOf="@+id/edtPhone"
+        app:layout_constraintTop_toBottomOf="@+id/edtPhone" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/shape"
+        android:onClick="onClickCreateAccount"
+        android:text="انشاء الحساب"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/edtPassword"
+        app:layout_constraintStart_toStartOf="@+id/edtPassword"
+        app:layout_constraintTop_toBottomOf="@+id/edtPassword" />
+</androidx.constraintlayout.widget.ConstraintLayout>

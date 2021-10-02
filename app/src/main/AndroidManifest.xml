@@ -7,23 +7,28 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo"
-        android:largeHeap="true"
-        android:usesCleartextTraffic="true"
-        android:requestLegacyExternalStorage="true"
         android:label="S.D.S"
+        android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name="com.nova.rawad.AdminMainActivity"/>
-        <activity android:name="com.nova.rawad.MainActivity" />
-        <activity android:name="com.nova.rawad.ProfileScreen" />
-        <activity android:name="com.nova.rawad.LoginScreenActivity" />
-        <activity android:name="com.nova.rawad.RegisterScreen" />
-        <activity android:name="com.nova.rawad.SplashScreenActivity">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".SplashScreenActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Users.newRegisterActivity"
+            android:exported="true" />
+        <activity android:name=".AdminMainActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".ProfileScreen" />
+        <activity android:name=".LoginScreenActivity" />
+        <activity android:name=".RegisterScreen" />
+        <activity android:name=".Users.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
