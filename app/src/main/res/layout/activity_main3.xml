@@ -1,51 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <!--Edittext for getting users phone number-->
-    <EditText
-        android:id="@+id/idEdtPhoneNumber"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="10dp"
-        android:hint="Enter your phone"
-        android:importantForAutofill="no"
-        android:inputType="phone" />
 
     <!--Button for getting OTP-->
-    <Button
-        android:id="@+id/idBtnGetOtp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/idEdtPhoneNumber"
-        android:layout_margin="10dp"
-        android:text="Get OTP"
-        android:textAllCaps="false" />
 
     <!--Edittext for getting otp from user-->
     <EditText
         android:id="@+id/idEdtOtp"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/idBtnGetOtp"
-        android:layout_margin="10dp"
-        android:hint="Enter OTP"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
+        android:gravity="center"
+        android:hint="ادخل الرمز"
         android:importantForAutofill="no"
-        android:inputType="phone" />
+        android:inputType="phone"
+        android:minHeight="48dp"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <!--button for verifying user OTP-->
     <Button
         android:id="@+id/idBtnVerify"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/idEdtOtp"
-        android:layout_margin="10dp"
-        android:text="Verify OTP"
-        android:textAllCaps="false" />
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/shape"
+        android:text="تأكيد"
+        android:textAllCaps="false"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/idEdtOtp"
+        app:layout_constraintStart_toStartOf="@+id/idEdtOtp"
+        app:layout_constraintTop_toBottomOf="@+id/idEdtOtp" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="سوف يصلك رمز التأكيد على رقم هاتفك "
+        android:textSize="14dp"
+        app:layout_constraintEnd_toEndOf="@+id/idEdtOtp"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="15dp"
+        android:text="الغاء..."
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

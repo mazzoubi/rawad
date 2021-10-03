@@ -34,34 +34,29 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class newRegisterActivity extends AppCompatActivity {
-
-
-
-    EditText edtFullName , edtPhone , edtPassword ;
+public class UserLoginActivity extends AppCompatActivity {
+    EditText edtPhone , edtPassword ;
+    UserClass userClass ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_register);
+        setContentView(R.layout.activity_user_login);
         init();
-
-
     }
-
     void init(){
-        edtFullName = findViewById(R.id.edtFullName);
+        if (getSharedPreferences("User",MODE_PRIVATE).getString("id","").equals("")
+                ||
+                getSharedPreferences("User",MODE_PRIVATE).getString("id","")==null
+        ){}else {
+            startActivity(new Intent(getApplicationContext(),userDashboardActivity.class));
+            finish();
+        }
         edtPhone = findViewById(R.id.edtPhone);
         edtPassword = findViewById(R.id.edtPassword);
     }
-
-
-    public void onClickCreateAccount(View view) {
-        if (edtFullName.getText().toString().isEmpty()){
-            Toast.makeText(this, "الرجاء ادخال الاسم الكامل", Toast.LENGTH_SHORT).show();
-        }else if (edtPhone.getText().toString().isEmpty()){
+    public void onClickLogin(View view) {
+        if (edtPhone.getText().toString().isEmpty()){
             Toast.makeText(this, "الرجاء ادخال رقم الهاتف", Toast.LENGTH_SHORT).show();
-        }else if (edtPassword.getText().toString().isEmpty()){
-            Toast.makeText(this, "الرجاء ادخال كلمة المرور", Toast.LENGTH_SHORT).show();
         }else {
             FirebaseFirestore.getInstance().collection("Users")
                     .whereEqualTo("phone",edtPhone.getText().toString())
@@ -69,12 +64,16 @@ public class newRegisterActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                     if (queryDocumentSnapshots.getDocuments().size()==0){
+                        Toast.makeText(getApplicationContext(), "هذا الرقم غير مسجل مسبقاً, الرجاء التسجيل اولاً", Toast.LENGTH_SHORT).show();
+                    }else {
+                        userClass =new UserClass();
+                        userClass.fullName = queryDocumentSnapshots.getDocuments().get(0).getString("fullName");
+                        userClass.phone = queryDocumentSnapshots.getDocuments().get(0).getString("phone");
+                        userClass.id = queryDocumentSnapshots.getDocuments().get(0).getString("id");
+                        userClass.password = queryDocumentSnapshots.getDocuments().get(0).getString("password");
                         OtpDialog a = new OtpDialog();
                         a.setCancelable(false);
                         a.show();
-                    }else {
-                        Toast.makeText(getApplicationContext(), "هذا الرقم مسجل مسبقاً, الرجاء المحاولة برقم اخر", Toast.LENGTH_SHORT).show();
-
                     }
                 }
             });
@@ -82,13 +81,18 @@ public class newRegisterActivity extends AppCompatActivity {
         }
     }
 
+    public void onClickCreateAccount(View view) {
+        startActivity(new Intent(getApplicationContext(), newRegisterActivity.class));
+        finish();
+    }
+
 
     class OtpDialog extends Dialog {
 
         Activity c ;
         public OtpDialog(){
-            super(newRegisterActivity.this);
-            c=newRegisterActivity.this;
+            super(UserLoginActivity.this);
+            c=UserLoginActivity.this;
         }
 
         // variable for FirebaseAuth class
@@ -96,7 +100,7 @@ public class newRegisterActivity extends AppCompatActivity {
 
         // variable for our text input
         // field for phone and OTP.
-        private EditText  edtOTP;
+        private EditText edtOTP;
 
         // buttons for generating OTP and verifying OTP
         private Button verifyOTPBtn;
@@ -146,7 +150,7 @@ public class newRegisterActivity extends AppCompatActivity {
             txvCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    OtpDialog.super.dismiss();
+                    UserLoginActivity.OtpDialog.super.dismiss();
                 }
             });
         }
@@ -169,30 +173,16 @@ public class newRegisterActivity extends AppCompatActivity {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(c);
                                 builder.setTitle("تم التأكيد");
 
-
-                                String key = classDate.currentTimeAtMs();
-                                Map<String,Object> map = new HashMap<>();
-                                map.put("fullName", edtFullName.getText().toString());
-                                map.put("phone", edtPhone.getText().toString());
-                                map.put("password",edtPassword.getText().toString() );
-                                map.put("id", key);
                                 SharedPreferences.Editor editor = getSharedPreferences("User",MODE_PRIVATE).edit();
-                                FirebaseFirestore.getInstance().collection("Users").document(key).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()){
-                                            editor.putString("fullName", edtFullName.getText().toString());
-                                            editor.putString("phone", edtPhone.getText().toString());
-                                            editor.putString("password",edtPassword.getText().toString() );
-                                            editor.putString("id", key);
-                                            editor.apply();
-                                            Toast.makeText(c, "تم التأكيد", Toast.LENGTH_SHORT).show();
-                                            OtpDialog.super.dismiss();
-                                            startActivity(new Intent(c,userDashboardActivity.class));
-                                            c.finish();
-                                        }
-                                    }
-                                });
+                                editor.putString("fullName", userClass.fullName);
+                                editor.putString("phone", userClass.phone);
+                                editor.putString("password", userClass.password );
+                                editor.putString("id", userClass.id );
+                                editor.apply();
+                                Toast.makeText(c, "تم التأكيد", Toast.LENGTH_SHORT).show();
+                                UserLoginActivity.OtpDialog.super.dismiss();
+                                startActivity(new Intent(c,userDashboardActivity.class));
+                                c.finish();
 
 
                             } else {
@@ -283,15 +273,9 @@ public class newRegisterActivity extends AppCompatActivity {
                 // calling sign in method.
                 signInWithCredential(credential);
             }catch (Exception e){
-                Toast.makeText(c, "حدث خطأ اثناء الإنشاء, الرجاء المحاولة مرة اخرى", Toast.LENGTH_SHORT).show();
+                Toast.makeText(c, "حدث خطأ اثناء تسجيل الدخول, الرجاء المحاولة مرة اخرى", Toast.LENGTH_SHORT).show();
             }
-
-
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(getApplicationContext(),UserLoginActivity.class));
-    }
 }

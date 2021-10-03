@@ -18,17 +18,20 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".SplashScreenActivity"
+            android:name=".Users.newRegisterActivity"
             android:exported="true" />
         <activity
-            android:name=".Users.newRegisterActivity"
+            android:name=".Users.userDashboardActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SplashScreenActivity"
             android:exported="true" />
         <activity android:name=".AdminMainActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".ProfileScreen" />
         <activity android:name=".LoginScreenActivity" />
         <activity android:name=".RegisterScreen" />
-        <activity android:name=".Users.MainActivity">
+        <activity android:name=".Users.UserLoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

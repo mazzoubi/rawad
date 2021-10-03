@@ -4,10 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_login_screen.xml" value="0.264" />
-        <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_main3.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_main3.xml" value="0.264" />
         <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_new_register.xml" value="0.264" />
         <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_register_screen.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_splash_screen.xml" value="0.1" />
+        <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_user_dashboard.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_user_login.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>
