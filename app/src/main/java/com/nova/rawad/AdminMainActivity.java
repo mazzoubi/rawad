@@ -642,7 +642,7 @@ public class AdminMainActivity extends AppCompatActivity {
                                 tvage.setText("Age: "+info.age);
 
                                 Uri myUri = Uri.parse(info.pic);
-                                Picasso.with(AdminMainActivity.this).load(myUri).placeholder(R.mipmap.ic_launcher_round).into(img);
+                                Picasso.get().load(myUri).placeholder(R.mipmap.ic_launcher_round).into(img);
 
                             }
                             catch (Exception ex){

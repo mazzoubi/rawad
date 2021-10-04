@@ -71,6 +71,7 @@ public class UserLoginActivity extends AppCompatActivity {
                         userClass.phone = queryDocumentSnapshots.getDocuments().get(0).getString("phone");
                         userClass.id = queryDocumentSnapshots.getDocuments().get(0).getString("id");
                         userClass.password = queryDocumentSnapshots.getDocuments().get(0).getString("password");
+
                         OtpDialog a = new OtpDialog();
                         a.setCancelable(false);
                         a.show();

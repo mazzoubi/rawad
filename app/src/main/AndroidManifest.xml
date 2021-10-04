@@ -14,9 +14,15 @@
         android:largeHeap="true"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@drawable/logo"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".Users.CarDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Users.PassportDetailActivity"
+            android:exported="true" />
         <activity
             android:name=".Users.newRegisterActivity"
             android:exported="true" />
