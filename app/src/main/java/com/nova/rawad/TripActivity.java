@@ -437,4 +437,10 @@ public class TripActivity extends AppCompatActivity {
         Picasso.get().load(Uri.parse(requests.get(index).img)).into(img_dia1);
 
     }
+
+    public void Search(View view) {
+
+
+
+    }
 }
