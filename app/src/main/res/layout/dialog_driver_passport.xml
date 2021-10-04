@@ -229,7 +229,7 @@
             android:layout_width="0dp"
             android:background="@color/colorSecondary"
             android:layout_height="match_parent"
-            android:text="الرقم المرجعي"
+            android:text="المرجع"
             android:textColor="#ffffff" />
 
     </LinearLayout>

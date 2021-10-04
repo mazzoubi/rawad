@@ -60,11 +60,11 @@ import java.util.Map;
 
 public class DriversActivity extends AppCompatActivity {
 
-    ArrayList<UsersClass> drivers;
-    String pictureImagePath1, pictureImagePath2;
-    Bitmap bitmap1, bitmap2;
-    String DownloadUrl1, DownloadUrl2;
-    ImageView img_dia1, img_dia2;
+    ArrayList<UsersClass> drivers = null;
+    String pictureImagePath1 = "", pictureImagePath2= "";
+    Bitmap bitmap1 = null, bitmap2 = null;
+    String DownloadUrl1= "", DownloadUrl2= "";
+    ImageView img_dia1 = null, img_dia2 = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -548,9 +548,9 @@ public class DriversActivity extends AppCompatActivity {
         AutoCompleteTextView act = dialog2.findViewById(R.id.sea);
         EditText name = dialog2.findViewById(R.id.txvDate1);
         EditText nationality = dialog2.findViewById(R.id.txvDate2);
-        EditText birth = dialog2.findViewById(R.id.txvDate3);
-        EditText blood = dialog2.findViewById(R.id.txvDate4);
-        EditText lnum = dialog2.findViewById(R.id.txvDate9);
+        EditText carnum = dialog2.findViewById(R.id.txvDate3);
+        EditText cartype = dialog2.findViewById(R.id.txvDate4);
+        EditText passnum = dialog2.findViewById(R.id.txvDate9);
         EditText ltype = dialog2.findViewById(R.id.txvDate10);
         EditText expiry = dialog2.findViewById(R.id.txvDate11);
         EditText uid = dialog2.findViewById(R.id.txvDate8);
@@ -600,9 +600,9 @@ public class DriversActivity extends AppCompatActivity {
 
                                     name.setText(obj.d_name);
                                     nationality.setText(obj.d_nationality);
-                                    birth.setText(obj.d_birth);
-                                    blood.setText(obj.d_blood);
-                                    lnum.setText(obj.d_licence_num);
+                                    carnum.setText(obj.carNumber);
+                                    cartype.setText(obj.carType);
+                                    passnum.setText(obj.passengerNumber);
                                     ltype.setText(obj.d_type);
                                     expiry.setText(obj.d_expiry);
                                     uid.setText(obj.d_id);
@@ -654,20 +654,11 @@ public class DriversActivity extends AppCompatActivity {
                                     List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                                     DriverLicenceClass obj = list.get(0).toObject(DriverLicenceClass.class);
 
-                                    EditText name = dialog2.findViewById(R.id.txvDate1);
-                                    EditText nationality = dialog2.findViewById(R.id.txvDate2);
-                                    EditText birth = dialog2.findViewById(R.id.txvDate3);
-                                    EditText blood = dialog2.findViewById(R.id.txvDate4);
-                                    EditText lnum = dialog2.findViewById(R.id.txvDate9);
-                                    EditText ltype = dialog2.findViewById(R.id.txvDate10);
-                                    EditText expiry = dialog2.findViewById(R.id.txvDate11);
-                                    EditText uid = dialog2.findViewById(R.id.txvDate8);
-
                                     name.setText(obj.d_name);
                                     nationality.setText(obj.d_nationality);
-                                    birth.setText(obj.d_birth);
-                                    blood.setText(obj.d_blood);
-                                    lnum.setText(obj.d_licence_num);
+                                    carnum.setText(obj.carNumber);
+                                    cartype.setText(obj.carType);
+                                    passnum.setText(obj.passengerNumber);
                                     ltype.setText(obj.d_type);
                                     expiry.setText(obj.d_expiry);
                                     uid.setText(obj.d_id);
@@ -747,10 +738,10 @@ public class DriversActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Map<String, Object> map = new HashMap<>();
-                map.put("d_birth", birth.getText().toString());
-                map.put("d_blood", blood.getText().toString());
+                map.put("carNumber", carnum.getText().toString());
+                map.put("carType", cartype.getText().toString());
                 map.put("d_expiry", expiry.getText().toString());
-                map.put("d_licence_num", lnum.getText().toString());
+                map.put("passengerNumber", passnum.getText().toString());
                 map.put("d_name", name.getText().toString());
                 map.put("d_nationality", nationality.getText().toString());
                 map.put("d_type", ltype.getText().toString());

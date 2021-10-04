@@ -6,4 +6,9 @@
         <item>غير معتمد</item>
     </string-array>
 
+    <string-array name="payment">
+        <item>مدفوع</item>
+        <item>غير مدفوع</item>
+    </string-array>
+
 </resources>

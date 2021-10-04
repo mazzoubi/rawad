@@ -55,11 +55,11 @@ import java.util.Map;
 
 public class PassengersActivity extends AppCompatActivity {
 
-    ArrayList<PassengerPassportsClass> passengers;
-    String pictureImagePath1, pictureImagePath2;
-    Bitmap bitmap1, bitmap2;
-    String DownloadUrl1, DownloadUrl2;
-    ImageView img_dia1, img_dia2;
+    ArrayList<PassengerPassportsClass> passengers = null;
+    String pictureImagePath1 = "", pictureImagePath2= "";
+    Bitmap bitmap1 = null, bitmap2 = null;
+    String DownloadUrl1= "", DownloadUrl2= "";
+    ImageView img_dia1 = null, img_dia2 = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +91,8 @@ public class PassengersActivity extends AppCompatActivity {
 
     public void Search(View view) {
 
+        if (passengers == null)
+            return;
         final AlertDialog.Builder builder = new AlertDialog.Builder((PassengersActivity.this));
         LayoutInflater inflater = (PassengersActivity.this).getLayoutInflater();
         builder.setView(inflater.inflate(R.layout.dialog_passenger_passport, null));
@@ -123,7 +125,7 @@ public class PassengersActivity extends AppCompatActivity {
         EditText pissue = dialog2.findViewById(R.id.txvDate3);
         EditText pexpiry = dialog2.findViewById(R.id.txvDate4);
         EditText uid = dialog2.findViewById(R.id.txvDate8);
-        EditText mobile = dialog2.findViewById(R.id.textView12);
+        EditText mobile = dialog2.findViewById(R.id.txvDate12);
 
         img_dia1 = dialog2.findViewById(R.id.imageView);
         img_dia2 = dialog2.findViewById(R.id.imageView2);
@@ -275,6 +277,11 @@ public class PassengersActivity extends AppCompatActivity {
                     map.put("p_img", DownloadUrl1);
                 if(!DownloadUrl2.equals(""))
                     map.put("p_img2", DownloadUrl2);
+
+                if(uid.getText().toString().equals("")){
+                    uid.setText(classDate.currentTimeAtMs());
+                    map.put("id", uid.getText().toString());
+                    Toast.makeText(PassengersActivity.this, "تم إضافة راكب جديد", Toast.LENGTH_SHORT).show(); }
 
                 FirebaseFirestore.getInstance().collection("PassengerPassports")
                         .document(uid.getText().toString())
