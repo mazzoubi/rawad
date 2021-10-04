@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 inputPassword.setText(accountInfoClass.password);
 
                 Uri myUri = Uri.parse(accountInfoClass.pic);
-                Picasso.get().load(myUri).placeholder(R.mipmap.ic_launcher_round).into(pic);
+//                Picasso.with(MainActivity.this).load(myUri).placeholder(R.mipmap.ic_launcher_round).into(pic);
 
             }
         });

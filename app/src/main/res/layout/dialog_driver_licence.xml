@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/shape3"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <AutoCompleteTextView
+        android:id="@+id/sea"
+        android:layout_width="match_parent"
+        android:textAlignment="center"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
+        android:completionThreshold="1"
+        android:hint="إسم السائق"
+        android:layout_marginRight="15dp"
+        android:layout_toRightOf="@+id/btn_sea"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/shape4"
+        android:gravity="center"
+        android:layout_height="35dp"/>
+
+    <Button
+        android:id="@+id/btn_sea"
+        android:layout_width="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_height="35dp"
+        android:text="بحث"
+        android:layout_marginTop="15dp"
+        android:onClick="Search"
+        android:layout_gravity="center"
+        android:layout_marginLeft="15dp"
+        android:textStyle="bold"
+        android:textColor="#ffffff"
+        android:textSize="15dp"
+        android:background="@drawable/shape2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:weightSum="2"
+        android:id="@+id/lay1"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_below="@+id/sea"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/txvDate1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:background="@drawable/shape3"
+            android:gravity="center"
+            android:padding="3dp"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/textView33"
+            android:gravity="right"
+            android:paddingRight="5dp"
+            android:paddingTop="3dp"
+            android:textSize="14dp"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:background="@color/colorSecondary"
+            android:layout_height="match_parent"
+            android:text="إسم السائق"
+            android:textColor="#ffffff" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:weightSum="2"
+        android:id="@+id/lay2"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_below="@+id/lay1"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/txvDate2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:background="@drawable/shape3"
+            android:gravity="center"
+            android:padding="3dp"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:gravity="right"
+            android:paddingRight="5dp"
+            android:paddingTop="3dp"
+            android:textSize="14dp"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:background="@color/colorSecondary"
+            android:layout_height="match_parent"
+            android:text="الجنسية"
+            android:textColor="#ffffff" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:weightSum="2"
+        android:id="@+id/lay3"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_below="@+id/lay2"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/txvDate3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:background="@drawable/shape3"
+            android:gravity="center"
+            android:padding="3dp"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:gravity="right"
+            android:paddingRight="5dp"
+            android:paddingTop="3dp"
+            android:textSize="14dp"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:background="@color/colorSecondary"
+            android:layout_height="match_parent"
+            android:text="تاريخ الولادة"
+            android:textColor="#ffffff" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:weightSum="2"
+        android:id="@+id/lay4"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_below="@+id/lay3"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/txvDate4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:background="@drawable/shape3"
+            android:gravity="center"
+            android:padding="3dp"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:gravity="right"
+            android:paddingRight="5dp"
+            android:paddingTop="3dp"
+            android:textSize="14dp"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:background="@color/colorSecondary"
+            android:layout_height="match_parent"
+            android:text="فئة الدم"
+            android:textColor="#ffffff" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:weightSum="2"
+        android:id="@+id/lay9"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_below="@+id/lay4"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/txvDate9"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:background="@drawable/shape3"
+            android:gravity="center"
+            android:padding="3dp"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:gravity="right"
+            android:paddingRight="5dp"
+            android:paddingTop="3dp"
+            android:textSize="14dp"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:background="@color/colorSecondary"
+            android:layout_height="match_parent"
+            android:text="رقم الرخصة"
+            android:textColor="#ffffff" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:weightSum="2"
+        android:id="@+id/lay10"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_below="@+id/lay9"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/txvDate10"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:background="@drawable/shape3"
+            android:gravity="center"
+            android:padding="3dp"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:gravity="right"
+            android:paddingRight="5dp"
+            android:paddingTop="3dp"
+            android:textSize="14dp"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:background="@color/colorSecondary"
+            android:layout_height="match_parent"
+            android:text="فئة الرخصة"
+            android:textColor="#ffffff" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:weightSum="2"
+        android:id="@+id/lay11"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_below="@+id/lay10"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/txvDate11"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:background="@drawable/shape3"
+            android:gravity="center"
+            android:padding="3dp"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:gravity="right"
+            android:paddingRight="5dp"
+            android:paddingTop="3dp"
+            android:textSize="14dp"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:background="@color/colorSecondary"
+            android:layout_height="match_parent"
+            android:text="تاريخ الإنتهاء"
+            android:textColor="#ffffff" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:weightSum="2"
+        android:id="@+id/lay8"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_below="@+id/lay11"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/txvDate8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:background="@drawable/shape3"
+            android:enabled="false"
+            android:gravity="center"
+            android:padding="3dp"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:gravity="right"
+            android:paddingRight="5dp"
+            android:paddingTop="3dp"
+            android:textSize="14dp"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:background="@color/colorSecondary"
+            android:layout_height="match_parent"
+            android:text="الرقم المرجعي"
+            android:textColor="#ffffff" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:weightSum="2"
+        android:id="@+id/lay6"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_below="@+id/lay8"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <Spinner
+            android:id="@+id/txvDate6"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_weight="1.5"
+            android:entries="@array/state"
+            android:layout_gravity="center"
+            android:foregroundGravity="center"
+            android:textAlignment="center"
+            android:background="@drawable/shape3"
+            android:gravity="center"
+            android:padding="3dp"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:gravity="right"
+            android:paddingRight="5dp"
+            android:paddingTop="3dp"
+            android:textSize="14dp"
+            android:layout_weight="0.5"
+            android:layout_width="0dp"
+            android:background="@color/colorSecondary"
+            android:layout_height="match_parent"
+            android:text="تأكيد المكتب"
+            android:textColor="#ffffff" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_below="@+id/lay6"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/ic_baseline_camera_alt_24"
+        android:layout_height="150dp" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="150dp"
+        android:layout_below="@+id/lay6"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_baseline_camera_alt_24"
+        android:layout_height="150dp" />
+
+    <Button
+        android:id="@+id/btn_edit"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/imageView"
+        android:layout_height="35dp"
+        android:text="تعديل البيانات"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:textStyle="bold"
+        android:textColor="#ffffff"
+        android:textSize="15dp"
+        android:background="@drawable/shape2" />
+
+</RelativeLayout>

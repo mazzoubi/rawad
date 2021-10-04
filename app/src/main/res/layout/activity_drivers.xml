@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".DriversActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/rel"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        tools:context=".MainActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:id="@+id/toolbar"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            app:titleTextColor="@color/colorPrimary"
+            android:background="#ECECEC"
+            android:layout_height="wrap_content">
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="البحث عن سائق"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/rel"
+        android:onClick="Search"
+        android:layout_gravity="center"
+        android:layout_marginLeft="15dp"
+        android:textStyle="bold"
+        android:layout_marginRight="15dp"
+        android:textColor="#ffffff"
+        android:textSize="15dp"
+        android:background="@drawable/shape2" />
+
+    <Button
+        android:id="@+id/add_driver"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="إضافة سائق جديد"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/search"
+        android:layout_gravity="center"
+        android:layout_marginLeft="15dp"
+        android:onClick="AddDriver"
+        android:textStyle="bold"
+        android:layout_marginRight="15dp"
+        android:textColor="#ffffff"
+        android:textSize="15dp"
+        android:background="@drawable/shape2" />
+
+    <Button
+        android:id="@+id/add_passport"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="إضافة بيانات الجواز"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/add_driver"
+        android:layout_gravity="center"
+        android:onClick="AddPassport"
+        android:layout_marginLeft="15dp"
+        android:textStyle="bold"
+        android:layout_marginRight="15dp"
+        android:textColor="#ffffff"
+        android:textSize="15dp"
+        android:background="@drawable/shape2" />
+
+    <Button
+        android:id="@+id/add_licence"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="إضافة بيانات المركبة"
+        android:layout_marginTop="15dp"
+        android:onClick="AddLicence"
+        android:layout_below="@+id/add_passport"
+        android:layout_gravity="center"
+        android:layout_marginLeft="15dp"
+        android:textStyle="bold"
+        android:layout_marginRight="15dp"
+        android:textColor="#ffffff"
+        android:textSize="15dp"
+        android:background="@drawable/shape2" />
+
+</RelativeLayout>

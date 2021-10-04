@@ -17,6 +17,10 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".TripActivity"></activity>
+        <activity android:name=".VisaActivity" />
+        <activity android:name=".PassengersActivity" />
+        <activity android:name=".DriversActivity" />
         <activity
             android:name=".Users.CarDetailActivity"
             android:exported="true" />
@@ -32,12 +36,12 @@
         <activity
             android:name=".SplashScreenActivity"
             android:exported="true" />
-        <activity android:name=".AdminMainActivity" />
+        <activity android:name=".Users.UserLoginActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".ProfileScreen" />
         <activity android:name=".LoginScreenActivity" />
         <activity android:name=".RegisterScreen" />
-        <activity android:name=".Users.UserLoginActivity">
+        <activity android:name=".AdminMainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

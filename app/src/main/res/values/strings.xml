@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">SmartDetectorSystem</string>
+    <string name="app_name">رواد الرمثا</string>
+
+    <string-array name="state">
+        <item>معتمد</item>
+        <item>غير معتمد</item>
+    </string-array>
+
 </resources>
