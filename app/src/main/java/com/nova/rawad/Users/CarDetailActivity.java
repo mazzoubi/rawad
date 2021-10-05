@@ -10,6 +10,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -49,7 +50,7 @@ public class CarDetailActivity extends AppCompatActivity {
     Uri uri2 = null;
 
     EditText edtCarNumber , edtCarType , edtNationality , edtPassengerNumber ;
-
+    ProgressDialog progressDialog ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +59,8 @@ public class CarDetailActivity extends AppCompatActivity {
     }
 
     void init(){
+        progressDialog = new ProgressDialog(CarDetailActivity.this);
+        progressDialog.setTitle("الرجاء الإنتظار...");
         txvExpiryDate = findViewById(R.id.editTextTextPersonName2);
         txvImageState = findViewById(R.id.textView15);
         txvImageState2 = findViewById(R.id.textView16);
@@ -67,12 +70,15 @@ public class CarDetailActivity extends AppCompatActivity {
         edtNationality = findViewById(R.id.editTextTextPersonName4);
         edtPassengerNumber = findViewById(R.id.editTextTextPersonName5);
 
+
+        progressDialog.show();
         FirebaseFirestore.getInstance().collection("DriverLicence")
                 .document(getSharedPreferences("User",MODE_PRIVATE).getString("id",""))
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 try {
+                    progressDialog.dismiss();
                     edtCarType.setText(documentSnapshot.getString("carType"));
                     edtCarNumber.setText(documentSnapshot.getString("carNumber"));
                     edtPassengerNumber.setText(documentSnapshot.getString("passengerNumber"));
@@ -83,7 +89,9 @@ public class CarDetailActivity extends AppCompatActivity {
                     uri2 = Uri.parse(documentSnapshot.getString("d_img2"));
 
 
-                }catch (Exception e){}
+                }catch (Exception e){
+                    progressDialog.dismiss();
+                }
             }
         });
 
@@ -238,6 +246,7 @@ public class CarDetailActivity extends AppCompatActivity {
         }else if (uri==null){
             Toast.makeText(getApplicationContext(), "الرجاء ادخال صورة رخصة المركبة", Toast.LENGTH_SHORT).show();
         }else {
+            progressDialog.show();
             Map<String,Object> map = new HashMap<>();
             map.put("carType", edtCarType.getText().toString());
             map.put("d_expiry", dateFrom);
@@ -255,6 +264,7 @@ public class CarDetailActivity extends AppCompatActivity {
                     .update(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
+                    progressDialog.dismiss();
                     if (task.isSuccessful()){
                         Toast.makeText(getApplicationContext(), "تم الحفظ", Toast.LENGTH_SHORT).show();
                         finish();

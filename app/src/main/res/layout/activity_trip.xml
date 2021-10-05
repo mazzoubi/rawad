@@ -231,22 +231,23 @@
         android:textColor="#ffffff"
         android:textSize="15dp"
         android:background="@drawable/shape2" />
+
     <Button
         android:id="@+id/view_remove"
         android:layout_width="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/add_pass"
         android:layout_height="35dp"
-        android:layout_marginRight="15dp"
-        android:text="عرض/إضافة ركاب إلى الرحلة"
-        android:layout_marginTop="5dp"
-        android:onClick="ViewAddPassengers"
+        android:layout_below="@+id/add_pass"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:layout_marginLeft="15dp"
-        android:textStyle="bold"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/shape2"
+        android:onClick="ViewAddPassengers"
+        android:text="عرض/إضافة ركاب إلى الرحلة"
         android:textColor="#ffffff"
         android:textSize="15dp"
-        android:background="@drawable/shape2" />
+        android:textStyle="bold" />
     <Button
         android:id="@+id/view_visa"
         android:layout_width="match_parent"
@@ -263,20 +264,21 @@
         android:textColor="#ffffff"
         android:textSize="15dp"
         android:background="@drawable/shape2" />
+
     <Button
         android:id="@+id/print"
         android:layout_width="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/view_visa"
         android:layout_height="35dp"
-        android:layout_marginRight="15dp"
-        android:text="طباعة/إرسال ملف الرحلة"
-        android:layout_marginTop="5dp"
+        android:layout_below="@+id/view_visa"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:layout_marginLeft="15dp"
-        android:textStyle="bold"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/shape2"
+        android:text="طباعة/إرسال ملف الرحلة"
         android:textColor="#ffffff"
         android:textSize="15dp"
-        android:background="@drawable/shape2" />
+        android:textStyle="bold" />
 
 </RelativeLayout>

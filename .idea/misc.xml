@@ -5,14 +5,24 @@
       <map>
         <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_car_detail.xml" value="0.264" />
         <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_login_screen.xml" value="0.264" />
+        <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_main2.xml" value="0.23854166666666668" />
         <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_main3.xml" value="0.264" />
+        <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_my_request.xml" value="0.23854166666666668" />
         <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_new_register.xml" value="0.264" />
         <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_passport_detail.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_register_screen.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_request.xml" value="0.23854166666666668" />
         <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_splash_screen.xml" value="0.1" />
+        <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_srevices.xml" value="0.23854166666666668" />
+        <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_trip.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_user_dashboard.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_user_login.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_visa.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/dialog_driver_search.xml" value="0.23854166666666668" />
         <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/dialog_show_image.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/dialog_visa.xml" value="0.23854166666666668" />
+        <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/dialog_visa2.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/row_request_adapter.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>

@@ -6,6 +6,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -30,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -39,6 +42,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.nova.rawad.Users.PassportDetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -61,6 +65,7 @@ public class VisaActivity extends AppCompatActivity {
     String DownloadUrl1= "";
     ImageView img_dia1 = null;
     int index = -1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -194,6 +199,7 @@ public class VisaActivity extends AppCompatActivity {
                     else
                         pconfirm.setSelection(0);
 
+                    DownloadUrl1= requests.get(index).img;
                     Picasso.get().load(Uri.parse(requests.get(index).img)).into(img_dia1);
 
                 }
@@ -222,6 +228,12 @@ public class VisaActivity extends AppCompatActivity {
 
                         CaptureImage1();
 
+                    }
+                }).setNeutralButton("عرض الصورة", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ShowImageDialog a = new ShowImageDialog(Uri.parse(DownloadUrl1));
+                        a.show();
                     }
                 }).create().show();
 
@@ -391,4 +403,24 @@ public class VisaActivity extends AppCompatActivity {
         //here abu rashed
 
     }
+
+    public class ShowImageDialog extends Dialog {
+        Activity c ;
+        Uri urrri ;
+        public ShowImageDialog(Uri urrri){
+            super(VisaActivity.this);
+            c=VisaActivity.this;
+            this.urrri = urrri;
+        }
+
+        PhotoView imageView ;
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.dialog_show_image);
+            imageView = findViewById(R.id.imageViewMain);
+            Picasso.get().load(urrri).into(imageView);
+        }
+    }
+
 }

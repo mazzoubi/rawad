@@ -13,4 +13,6 @@ public class UserClass implements Serializable {
     public String password="";
     @PropertyName("id")
     public String id="";
+    @PropertyName("type")
+    public String type="";
 }

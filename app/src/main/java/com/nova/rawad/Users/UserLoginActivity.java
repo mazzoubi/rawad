@@ -27,6 +27,7 @@ import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.nova.rawad.AdminMainActivity;
 import com.nova.rawad.R;
 import com.nova.rawad.classDate;
 
@@ -182,8 +183,14 @@ public class UserLoginActivity extends AppCompatActivity {
                                 editor.apply();
                                 Toast.makeText(c, "تم التأكيد", Toast.LENGTH_SHORT).show();
                                 UserLoginActivity.OtpDialog.super.dismiss();
-                                startActivity(new Intent(c,userDashboardActivity.class));
-                                c.finish();
+                                if (userClass.type.equals("0")){
+                                    startActivity(new Intent(c, AdminMainActivity.class));
+                                    c.finish();
+                                }else if (userClass.type.equals("1")){
+                                    startActivity(new Intent(c,userDashboardActivity.class));
+                                    c.finish();
+                                }
+
 
 
                             } else {

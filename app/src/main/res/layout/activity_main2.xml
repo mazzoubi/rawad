@@ -16,13 +16,13 @@
         tools:context=".MainActivity">
 
         <androidx.appcompat.widget.Toolbar
-            android:layout_width="match_parent"
             android:id="@+id/toolbar"
-            android:layout_centerHorizontal="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            app:titleTextColor="@color/colorPrimary"
+            android:layout_centerHorizontal="true"
             android:background="#ECECEC"
-            android:layout_height="wrap_content">
+            app:titleTextColor="@color/colorPrimary">
 
         </androidx.appcompat.widget.Toolbar>
 

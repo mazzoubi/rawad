@@ -32,17 +32,17 @@
         android:id="@+id/search"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:text="بحث/إضافة تأشيرة"
-        android:layout_marginTop="15dp"
         android:layout_below="@+id/rel"
-        android:onClick="Search"
         android:layout_gravity="center"
         android:layout_marginLeft="15dp"
-        android:textStyle="bold"
+        android:layout_marginTop="15dp"
         android:layout_marginRight="15dp"
+        android:background="@drawable/shape2"
+        android:onClick="Search"
+        android:text="بحث/إضافة تأشيرة"
         android:textColor="#ffffff"
         android:textSize="15dp"
-        android:background="@drawable/shape2" />
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/search2"

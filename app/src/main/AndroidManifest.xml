@@ -17,10 +17,19 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".TripActivity"></activity>
+        <activity
+            android:name=".Users.MyRequestActivity"
+            android:exported="true" />
+        <activity
+            android:name=".Users.RequestActivity"
+            android:exported="true" />
+        <activity android:name=".TripActivity" />
         <activity android:name=".VisaActivity" />
         <activity android:name=".PassengersActivity" />
         <activity android:name=".DriversActivity" />
+        <activity
+            android:name=".Users.ServicesActivity"
+            android:exported="true" />
         <activity
             android:name=".Users.CarDetailActivity"
             android:exported="true" />
@@ -31,17 +40,20 @@
             android:name=".Users.newRegisterActivity"
             android:exported="true" />
         <activity
+            android:name=".Users.Trip2Activity"
+            android:exported="true" />
+        <activity
             android:name=".Users.userDashboardActivity"
             android:exported="true" />
         <activity
             android:name=".SplashScreenActivity"
             android:exported="true" />
-        <activity android:name=".Users.UserLoginActivity" />
+        <activity android:name=".AdminMainActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".ProfileScreen" />
         <activity android:name=".LoginScreenActivity" />
         <activity android:name=".RegisterScreen" />
-        <activity android:name=".AdminMainActivity">
+        <activity android:name=".Users.UserLoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

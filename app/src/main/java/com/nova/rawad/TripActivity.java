@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -24,6 +26,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -45,6 +48,8 @@ public class TripActivity extends AppCompatActivity {
     AutoCompleteTextView act;
     EditText name, d_id, req, conf;
     Button btn_sea;
+
+    Uri uri , uri2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -248,6 +253,8 @@ public class TripActivity extends AppCompatActivity {
                                 else
                                     pconfirm.setSelection(0);
 
+                                uri = Uri.parse(TempPassengers.get(position).p_img);
+                                uri2 = Uri.parse(TempPassengers.get(position).p_img2);
                                 Picasso.get().load(Uri.parse(TempPassengers.get(position).p_img)).into(img_dia1);
                                 Picasso.get().load(Uri.parse(TempPassengers.get(position).p_img2)).into(img_dia2);
                             }
@@ -347,6 +354,9 @@ public class TripActivity extends AppCompatActivity {
                                 else
                                     pconfirm.setSelection(0);
 
+
+                                uri = Uri.parse(passengers.get(position).p_img);
+                                uri2 = Uri.parse(passengers.get(position).p_img2);
                                 Picasso.get().load(Uri.parse(passengers.get(position).p_img)).into(img_dia1);
                                 Picasso.get().load(Uri.parse(passengers.get(position).p_img2)).into(img_dia2);
                             }
@@ -434,6 +444,7 @@ public class TripActivity extends AppCompatActivity {
         else
             pconfirm.setSelection(0);
 
+
         Picasso.get().load(Uri.parse(requests.get(index).img)).into(img_dia1);
 
     }
@@ -442,5 +453,24 @@ public class TripActivity extends AppCompatActivity {
 
 
 
+    }
+
+    public class ShowImageDialog extends Dialog {
+        Activity c ;
+        Uri urrri ;
+        public ShowImageDialog(Uri urrri){
+            super(TripActivity.this);
+            c=TripActivity.this;
+            this.urrri = urrri;
+        }
+
+        PhotoView imageView ;
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.dialog_show_image);
+            imageView = findViewById(R.id.imageViewMain);
+            Picasso.get().load(urrri).into(imageView);
+        }
     }
 }

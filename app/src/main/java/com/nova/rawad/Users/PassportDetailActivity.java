@@ -10,6 +10,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -49,6 +50,7 @@ public class PassportDetailActivity extends AppCompatActivity {
 
     EditText edtPassNumber , edtPassPlace ;
 
+    ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +59,8 @@ public class PassportDetailActivity extends AppCompatActivity {
     }
 
     void init(){
+        progressDialog = new ProgressDialog(PassportDetailActivity.this);
+        progressDialog.setTitle("الرجاء الإنتظار...");
         txvExpiryDate = findViewById(R.id.editTextTextPersonName2);
         txvImageState = findViewById(R.id.textView15);
         txvImageState2 = findViewById(R.id.textView16);
@@ -64,11 +68,13 @@ public class PassportDetailActivity extends AppCompatActivity {
         edtPassNumber = findViewById(R.id.editTextTextPersonName);
         edtPassPlace = findViewById(R.id.editTextTextPersonName3);
 
+        progressDialog.show();
         FirebaseFirestore.getInstance().collection("DriverPassports")
                 .document(getSharedPreferences("User",MODE_PRIVATE).getString("id",""))
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
+                progressDialog.dismiss();
                 try {
                     edtPassNumber.setText(documentSnapshot.getString("p_num"));
                     edtPassPlace.setText(documentSnapshot.getString("passportPlace"));
@@ -219,6 +225,7 @@ public class PassportDetailActivity extends AppCompatActivity {
         }else if (uri==null){
             Toast.makeText(getApplicationContext(), "الرجاء ادخال صورة الجواز", Toast.LENGTH_SHORT).show();
         }else {
+            progressDialog.show();
             Map<String,Object> map = new HashMap<>();
             map.put("d_id", getSharedPreferences("User",MODE_PRIVATE).getString("id",""));
             map.put("p_name", getSharedPreferences("User",MODE_PRIVATE).getString("fullName",""));
@@ -234,6 +241,7 @@ public class PassportDetailActivity extends AppCompatActivity {
                     .update(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
+                    progressDialog.dismiss();
                     if (task.isSuccessful()){
                         Toast.makeText(getApplicationContext(), "تم الحفظ", Toast.LENGTH_SHORT).show();
                         finish();
