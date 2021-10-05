@@ -80,8 +80,6 @@ public class RequestActivity extends AppCompatActivity {
     public void onClickRequest(View view) {
         if (dateFrom.isEmpty()){
             Toast.makeText(getApplicationContext(), "الرجاء اختيار تاريخ التصريح", Toast.LENGTH_SHORT).show();
-        }else if (edtEmail.getText().toString().isEmpty()){
-            Toast.makeText(getApplicationContext(), "الرجاء ادخال البريد الالكتروني", Toast.LENGTH_SHORT).show();
         }else {
             String entry = "0" ;
             String exit = "0" ;
