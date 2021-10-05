@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -36,6 +37,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -148,40 +150,108 @@ public class TripActivity extends AppCompatActivity {
                 btn_sea.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(TripActivity.this, "جاري جلب البيانات, يرجى الإنتظار...", Toast.LENGTH_LONG).show();
 
-                        int index = -1;
-                        for(int i=0; i<requests.size(); i++)
-                            if(requests.get(i).transId.equals(act.getText().toString()))
-                                index = i;
+                        final androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder((TripActivity.this));
+                        LayoutInflater inflater = (TripActivity.this).getLayoutInflater();
+                        builder.setView(inflater.inflate(R.layout.dialog_driver_sea, null));
+                        final androidx.appcompat.app.AlertDialog dialog3 = builder.create();
+                        ((FrameLayout) dialog3.getWindow().getDecorView().findViewById(android.R.id.content)).setForeground(new ColorDrawable(Color.TRANSPARENT));
+                        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                        lp.copyFrom(dialog3.getWindow().getAttributes());
+                        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+                        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
-                        if(index != -1){
+                        dialog3.show();
+                        dialog3.getWindow().setAttributes(lp);
+                        dialog3.setCanceledOnTouchOutside(false);
 
-                            name.setText(requests.get(index).userName);
-                            req.setText(requests.get(index).dateOfRequest);
-                            conf.setText(requests.get(index).dateOfPermit);
-                            d_id.setText(requests.get(index).userId);
+                        AutoCompleteTextView act2 = dialog3.findViewById(R.id.sea);
+                        ListView li = dialog3.findViewById(R.id.li);
 
-                            FirebaseFirestore.getInstance().collection("Trips")
-                                    .whereEqualTo("RequestId", requests.get(index).transId)
-                                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                @Override
-                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        FirebaseFirestore.getInstance().collection("Users")
+                                .whereEqualTo("type", "1")
+                                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            @Override
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
-                                    List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-                                    trips = new ArrayList<>();
+                                List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                                ArrayList<UsersClass> drivers = new ArrayList<>();
+                                ArrayList<String> names = new ArrayList<>();
 
-                                    for(int i=0; i<list.size(); i++)
-                                        trips.add(list.get(i).toObject(TrpipClass.class));
+                                for(int i=0; i<list.size(); i++){
+                                    drivers.add(list.get(i).toObject(UsersClass.class));
+                                    names.add(list.get(i).toObject(UsersClass.class).fullName); }
 
-                                    Toast.makeText(TripActivity.this, "تم جلب البيانات", Toast.LENGTH_SHORT).show();
+                                ArrayAdapter<String> adapter = new ArrayAdapter<String>(TripActivity.this, android.R.layout.simple_spinner_dropdown_item, names);
+                                act2.setAdapter(adapter);
 
-                                }
-                            });
+                                act2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                        }
-                        else
-                            Toast.makeText(TripActivity.this, "لم يتم العثور على الراكب", Toast.LENGTH_SHORT).show();
+                                        int index = -1;
+                                        for(int i=0; i<drivers.size(); i++)
+                                            if(drivers.get(i).fullName.equals(act2.getText().toString()))
+                                                index = i;
+
+                                        if(index != -1){
+                                            FirebaseFirestore.getInstance().collection("Requests")
+                                                    .whereEqualTo("userId", drivers.get(index).id)
+                                                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                                                    List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                                                    ArrayList<RequestsClass> reqs = new ArrayList<>();
+                                                    ArrayList<String> dates = new ArrayList<>();
+
+                                                    Collections.reverse(list);
+
+                                                    for(int i=0; i<list.size(); i++){
+                                                        reqs.add(list.get(i).toObject(RequestsClass.class));
+                                                        dates.add(list.get(i).toObject(RequestsClass.class).dateOfRequest); }
+
+                                                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(TripActivity.this, android.R.layout.simple_spinner_dropdown_item, dates);
+                                                    li.setAdapter(adapter);
+
+                                                    li.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                                        @Override
+                                                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                            name.setText(reqs.get(position).userName);
+                                                            req.setText(reqs.get(position).dateOfRequest);
+                                                            conf.setText(reqs.get(position).dateOfPermit);
+                                                            d_id.setText(reqs.get(position).userId);
+                                                            act.setText(reqs.get(position).transId);
+
+                                                            FirebaseFirestore.getInstance().collection("Trips")
+                                                                    .whereEqualTo("RequestId", reqs.get(position).transId)
+                                                                    .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                                                @Override
+                                                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                                                                    List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                                                                    trips = new ArrayList<>();
+
+                                                                    for(int i=0; i<list.size(); i++)
+                                                                        trips.add(list.get(i).toObject(TrpipClass.class));
+
+                                                                    dialog3.dismiss();
+
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                        else
+                                            Toast.makeText(TripActivity.this, "لم يتم العثور على السائق", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                            }
+                        });
+
                     }
                 });
 
@@ -280,7 +350,8 @@ public class TripActivity extends AppCompatActivity {
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if(task.isSuccessful()){
                                                     Toast.makeText(TripActivity.this, "تم حذف الراكب", Toast.LENGTH_SHORT).show();
-                                                    recreate(); }
+                                                    startActivity(new Intent(TripActivity.this, TripActivity.class));
+                                                    finish(); }
                                                 else
                                                     Toast.makeText(TripActivity.this, "حدث خطأ", Toast.LENGTH_SHORT).show();
                                             }
@@ -354,7 +425,6 @@ public class TripActivity extends AppCompatActivity {
                                 else
                                     pconfirm.setSelection(0);
 
-
                                 uri = Uri.parse(passengers.get(position).p_img);
                                 uri2 = Uri.parse(passengers.get(position).p_img2);
                                 Picasso.get().load(Uri.parse(passengers.get(position).p_img)).into(img_dia1);
@@ -384,7 +454,8 @@ public class TripActivity extends AppCompatActivity {
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if(task.isSuccessful()){
                                                     Toast.makeText(TripActivity.this, "تم إضافة الراكب", Toast.LENGTH_SHORT).show();
-                                                    recreate(); }
+                                                    startActivity(new Intent(TripActivity.this, TripActivity.class));
+                                                    finish(); }
                                                 else
                                                     Toast.makeText(TripActivity.this, "حدث خطأ", Toast.LENGTH_SHORT).show();
                                             }

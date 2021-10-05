@@ -12,6 +12,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -83,6 +84,15 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdminMainActivity extends AppCompatActivity {
+
+    public void Logout(View view) {
+
+        SharedPreferences shared = getSharedPreferences("User",MODE_PRIVATE);
+        SharedPreferences.Editor editor = shared.edit();
+        editor.clear();
+        editor.apply();
+
+    }
 
     public class CustomGridViewAdapter extends BaseAdapter {
 

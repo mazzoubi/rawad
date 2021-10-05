@@ -290,7 +290,9 @@ public class PassengersActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(PassengersActivity.this, "تم تعديل البيانات", Toast.LENGTH_SHORT).show();
-                            recreate();}
+                            startActivity(new Intent(PassengersActivity.this, PassengersActivity.class));
+                            finish();
+                        }
                         else
                             Toast.makeText(PassengersActivity.this, "حدث خطأ", Toast.LENGTH_SHORT).show();
 

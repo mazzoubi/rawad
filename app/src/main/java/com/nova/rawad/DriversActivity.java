@@ -206,7 +206,9 @@ public class DriversActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(DriversActivity.this, "تم تعديل البيانات", Toast.LENGTH_SHORT).show();
-                            recreate();}
+                            startActivity(new Intent(DriversActivity.this, DriversActivity.class));
+                            finish();
+                        }
                         else
                             Toast.makeText(DriversActivity.this, "حدث خطأ", Toast.LENGTH_SHORT).show();
                     }
@@ -506,7 +508,9 @@ public class DriversActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(DriversActivity.this, "تم تعديل البيانات", Toast.LENGTH_SHORT).show();
-                            recreate();}
+                            startActivity(new Intent(DriversActivity.this, DriversActivity.class));
+                            finish();
+                        }
                         else
                             Toast.makeText(DriversActivity.this, "حدث خطأ", Toast.LENGTH_SHORT).show();
 
@@ -763,7 +767,9 @@ public class DriversActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(DriversActivity.this, "تم تعديل البيانات", Toast.LENGTH_SHORT).show();
-                            recreate();}
+                            startActivity(new Intent(DriversActivity.this, DriversActivity.class));
+                            finish();
+                        }
                         else
                             Toast.makeText(DriversActivity.this, "حدث خطأ", Toast.LENGTH_SHORT).show();
 

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/shape3"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <AutoCompleteTextView
+        android:id="@+id/sea"
+        android:layout_width="match_parent"
+        android:textAlignment="center"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
+        android:completionThreshold="1"
+        android:hint="إسم السائق"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/shape4"
+        android:gravity="center"
+        android:layout_height="35dp"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:id="@+id/li"
+        android:layout_margin="15dp"
+        android:layout_below="@+id/sea"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

@@ -49,8 +49,13 @@ public class UserLoginActivity extends AppCompatActivity {
                 ||
                 getSharedPreferences("User",MODE_PRIVATE).getString("id","")==null
         ){}else {
-            startActivity(new Intent(getApplicationContext(),userDashboardActivity.class));
-            finish();
+            if (getSharedPreferences("User",MODE_PRIVATE).getString("type","").equals("0")){
+                startActivity(new Intent(UserLoginActivity.this, AdminMainActivity.class));
+                finish();
+            }else if (getSharedPreferences("User",MODE_PRIVATE).getString("type","").equals("1")){
+                startActivity(new Intent(UserLoginActivity.this,userDashboardActivity.class));
+                finish();
+            }
         }
         edtPhone = findViewById(R.id.edtPhone);
         edtPassword = findViewById(R.id.edtPassword);
@@ -72,6 +77,7 @@ public class UserLoginActivity extends AppCompatActivity {
                         userClass.phone = queryDocumentSnapshots.getDocuments().get(0).getString("phone");
                         userClass.id = queryDocumentSnapshots.getDocuments().get(0).getString("id");
                         userClass.password = queryDocumentSnapshots.getDocuments().get(0).getString("password");
+                        userClass.type = queryDocumentSnapshots.getDocuments().get(0).getString("type");
 
                         OtpDialog a = new OtpDialog();
                         a.setCancelable(false);
@@ -180,6 +186,7 @@ public class UserLoginActivity extends AppCompatActivity {
                                 editor.putString("phone", userClass.phone);
                                 editor.putString("password", userClass.password );
                                 editor.putString("id", userClass.id );
+                                editor.putString("type", userClass.type );
                                 editor.apply();
                                 Toast.makeText(c, "تم التأكيد", Toast.LENGTH_SHORT).show();
                                 UserLoginActivity.OtpDialog.super.dismiss();

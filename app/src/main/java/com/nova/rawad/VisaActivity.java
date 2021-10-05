@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -52,6 +53,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +67,6 @@ public class VisaActivity extends AppCompatActivity {
     String DownloadUrl1= "";
     ImageView img_dia1 = null;
     int index = -1;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,31 +181,99 @@ public class VisaActivity extends AppCompatActivity {
         btn_sea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(VisaActivity.this, "جاري جلب البيانات, يرجى الإنتظار...", Toast.LENGTH_LONG).show();
 
-                index = -1;
-                for(int i=0; i<requests.size(); i++)
-                    if(requests.get(i).transId.equals(act.getText().toString()))
-                        index = i;
+                final AlertDialog.Builder builder = new AlertDialog.Builder((VisaActivity.this));
+                LayoutInflater inflater = (VisaActivity.this).getLayoutInflater();
+                builder.setView(inflater.inflate(R.layout.dialog_driver_sea, null));
+                final AlertDialog dialog3 = builder.create();
+                ((FrameLayout) dialog3.getWindow().getDecorView().findViewById(android.R.id.content)).setForeground(new ColorDrawable(Color.TRANSPARENT));
+                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                lp.copyFrom(dialog3.getWindow().getAttributes());
+                lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+                lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
 
-                if(index != -1){
+                dialog3.show();
+                dialog3.getWindow().setAttributes(lp);
+                dialog3.setCanceledOnTouchOutside(false);
 
-                    name.setText(requests.get(index).userName);
-                    req.setText(requests.get(index).dateOfRequest);
-                    conf.setText(requests.get(index).dateOfPermit);
-                    trans.setText(requests.get(index).transId);
+                AutoCompleteTextView act = dialog3.findViewById(R.id.sea);
+                ListView li = dialog3.findViewById(R.id.li);
 
-                    if(requests.get(index).payment.equals("") || requests.get(index).payment.equals("0"))
-                        pconfirm.setSelection(1);
-                    else
-                        pconfirm.setSelection(0);
+                FirebaseFirestore.getInstance().collection("Users")
+                        .whereEqualTo("type", "1")
+                        .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
-                    DownloadUrl1= requests.get(index).img;
-                    Picasso.get().load(Uri.parse(requests.get(index).img)).into(img_dia1);
+                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                        ArrayList<UsersClass> drivers = new ArrayList<>();
+                        ArrayList<String> names = new ArrayList<>();
 
-                }
-                else
-                    Toast.makeText(VisaActivity.this, "لم يتم العثور على الراكب", Toast.LENGTH_SHORT).show();
+                        for(int i=0; i<list.size(); i++){
+                            drivers.add(list.get(i).toObject(UsersClass.class));
+                            names.add(list.get(i).toObject(UsersClass.class).fullName); }
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(VisaActivity.this, android.R.layout.simple_spinner_dropdown_item, names);
+                        act.setAdapter(adapter);
+
+                        act.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                                int index = -1;
+                                for(int i=0; i<drivers.size(); i++)
+                                    if(drivers.get(i).fullName.equals(act.getText().toString()))
+                                        index = i;
+
+                                if(index != -1){
+                                    FirebaseFirestore.getInstance().collection("Requests")
+                                            .whereEqualTo("userId", drivers.get(index).id)
+                                            .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                                            ArrayList<RequestsClass> reqs = new ArrayList<>();
+                                            ArrayList<String> dates = new ArrayList<>();
+
+                                            Collections.reverse(list);
+
+                                            for(int i=0; i<list.size(); i++){
+                                                reqs.add(list.get(i).toObject(RequestsClass.class));
+                                                dates.add(list.get(i).toObject(RequestsClass.class).dateOfRequest); }
+
+                                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(VisaActivity.this, android.R.layout.simple_spinner_dropdown_item, dates);
+                                            li.setAdapter(adapter);
+
+                                            li.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                                @Override
+                                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                    name.setText(reqs.get(position).userName);
+                                                    req.setText(reqs.get(position).dateOfRequest);
+                                                    conf.setText(reqs.get(position).dateOfPermit);
+                                                    trans.setText(reqs.get(position).transId);
+
+                                                    if(requests.get(position).payment.equals("") || requests.get(position).payment.equals("0"))
+                                                        pconfirm.setSelection(1);
+                                                    else
+                                                        pconfirm.setSelection(0);
+
+                                                    Picasso.get().load(Uri.parse(requests.get(position).img)).into(img_dia1);
+
+                                                    dialog3.dismiss();
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                                else
+                                    Toast.makeText(VisaActivity.this, "لم يتم العثور على السائق", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
+                });
+
             }
         });
 
@@ -270,7 +339,8 @@ public class VisaActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(VisaActivity.this, "تم تعديل البيانات", Toast.LENGTH_SHORT).show();
-                            recreate();}
+                            startActivity(new Intent(VisaActivity.this, VisaActivity.class));
+                            finish(); }
                         else
                             Toast.makeText(VisaActivity.this, "حدث خطأ", Toast.LENGTH_SHORT).show();
 

@@ -49,7 +49,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/rel"
         android:layout_height="35dp"
-        android:text="بحث"
+        android:text="بحث بالإسم"
         android:layout_marginTop="15dp"
         android:onClick="Search"
         android:layout_gravity="center"
