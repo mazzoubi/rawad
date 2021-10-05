@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -44,6 +46,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.nova.rawad.Users.PassportDetailActivity;
+import com.nova.rawad.Users.RequestActivity;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -53,10 +56,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class VisaActivity extends AppCompatActivity {
@@ -68,6 +73,14 @@ public class VisaActivity extends AppCompatActivity {
     ImageView img_dia1 = null;
     int index = -1;
 
+    ListView listView ;
+
+    String dateFrom = "" ;
+
+    Button button ;
+
+    Uri uri111 ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,26 +89,66 @@ public class VisaActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("رواد الرمثا");
 
+        listView=findViewById(R.id.listView);
+        button=findViewById(R.id.search2);
+        dateFrom = classDate.date();
+        button.setText(classDate.date());
+
+        getRequests();
+
+    }
+
+    void getRequests(){
         Toast.makeText(this, "جاري جلب البيانات, يرجى الإنتظار...", Toast.LENGTH_LONG).show();
 
         FirebaseFirestore.getInstance().collection("Requests")
+                .whereEqualTo("dateOfPermit",classDate.addDays(dateFrom,1))
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
                 List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                 requests = new ArrayList<>();
+                ArrayList<String> str = new ArrayList<>();
 
-                for(int i=0; i<list.size(); i++)
+                for(int i=0; i<list.size(); i++) {
                     requests.add(list.get(i).toObject(RequestsClass.class));
+                    str.add("اسم السائق: "+list.get(i).toObject(RequestsClass.class).userName+"\n"
+                            +"تاريخ الرحلة: "+list.get(i).toObject(RequestsClass.class).dateOfPermit+
+                            "\n"+"رقم الرحلة: "+list.get(i).toObject(RequestsClass.class).transId)
+                    ;
+                }
 
                 Toast.makeText(VisaActivity.this, "تم جلب البيانات", Toast.LENGTH_SHORT).show();
 
-
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1,str);
+                listView.setAdapter(adapter);
 
             }
         });
+    }
 
+    void showDateFrom(){
+        final Calendar myCalendar = Calendar.getInstance();
+        DatePickerDialog.OnDateSetListener date_ = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                String myFormat = "d-M-yyyy"; //In which you need put here
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+                dateFrom=sdf.format(myCalendar.getTime());
+                button.setText(dateFrom);
+                getRequests();
+            }
+        };
+
+        new DatePickerDialog(VisaActivity.this, date_, myCalendar
+                .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
     public void Search(View view) {
@@ -258,8 +311,8 @@ public class VisaActivity extends AppCompatActivity {
                                                     else
                                                         pconfirm.setSelection(0);
 
+                                                    uri111=Uri.parse(requests.get(position).img);
                                                     Picasso.get().load(Uri.parse(requests.get(position).img)).into(img_dia1);
-
                                                     dialog3.dismiss();
                                                 }
                                             });
@@ -301,7 +354,7 @@ public class VisaActivity extends AppCompatActivity {
                 }).setNeutralButton("عرض الصورة", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ShowImageDialog a = new ShowImageDialog(Uri.parse(DownloadUrl1));
+                        ShowImageDialog a = new ShowImageDialog(index);
                         a.show();
                     }
                 }).create().show();
@@ -400,6 +453,7 @@ public class VisaActivity extends AppCompatActivity {
                             public void onSuccess(Uri uri) {
 
                                 DownloadUrl1 = uri.toString();
+                                uri111 = uri;
                                 Toast.makeText(VisaActivity.this, "تم رفع الصورة بنجاح", Toast.LENGTH_SHORT).show();
                                 img_dia1.setImageBitmap(bitmap1);
                             }
@@ -430,6 +484,7 @@ public class VisaActivity extends AppCompatActivity {
                             public void onSuccess(Uri uri) {
 
                                 DownloadUrl1 = uri.toString();
+                                uri111 = uri;
                                 Toast.makeText(VisaActivity.this, "تم رفع الصورة بنجاح", Toast.LENGTH_SHORT).show();
                                 img_dia1.setImageBitmap(imageBitmap);
                             }
@@ -469,18 +524,16 @@ public class VisaActivity extends AppCompatActivity {
     }
 
     public void Search2(View view) {
-
-        //here abu rashed
-
+        showDateFrom();
     }
 
     public class ShowImageDialog extends Dialog {
         Activity c ;
-        Uri urrri ;
-        public ShowImageDialog(Uri urrri){
+        int i ;
+        public ShowImageDialog(int i ){
             super(VisaActivity.this);
             c=VisaActivity.this;
-            this.urrri = urrri;
+            this.i = i;
         }
 
         PhotoView imageView ;
@@ -489,7 +542,7 @@ public class VisaActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.dialog_show_image);
             imageView = findViewById(R.id.imageViewMain);
-            Picasso.get().load(urrri).into(imageView);
+            Picasso.get().load(Uri.parse(requests.get(i).img)).into(imageView);
         }
     }
 

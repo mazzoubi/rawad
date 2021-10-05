@@ -82,13 +82,14 @@ public class userDashboardActivity extends AppCompatActivity {
     }
 
     public void onClickSignOut(View view) {
-        SharedPreferences.Editor editor = getSharedPreferences("User",MODE_PRIVATE).edit();
-        editor.putString("fullName", "");
-        editor.putString("phone", "");
-        editor.putString("password", "" );
-        editor.putString("id", "" );
-        editor.apply();
-        finish();
+        startActivity(new Intent(getApplicationContext(),AdminMainActivity.class));
+//        SharedPreferences.Editor editor = getSharedPreferences("User",MODE_PRIVATE).edit();
+//        editor.putString("fullName", "");
+//        editor.putString("phone", "");
+//        editor.putString("password", "" );
+//        editor.putString("id", "" );
+//        editor.apply();
+//        finish();
     }
 
     public void onClickPassport(View view) {
