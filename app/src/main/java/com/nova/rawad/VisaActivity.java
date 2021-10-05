@@ -96,6 +96,13 @@ public class VisaActivity extends AppCompatActivity {
 
         getRequests();
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Search4(position);
+            }
+        });
+
     }
 
     void getRequests(){
@@ -230,6 +237,238 @@ public class VisaActivity extends AppCompatActivity {
                     Toast.makeText(VisaActivity.this, "لم يتم العثور على الراكب", Toast.LENGTH_SHORT).show();
             }
         });
+
+        btn_sea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder((VisaActivity.this));
+                LayoutInflater inflater = (VisaActivity.this).getLayoutInflater();
+                builder.setView(inflater.inflate(R.layout.dialog_driver_sea, null));
+                final AlertDialog dialog3 = builder.create();
+                ((FrameLayout) dialog3.getWindow().getDecorView().findViewById(android.R.id.content)).setForeground(new ColorDrawable(Color.TRANSPARENT));
+                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                lp.copyFrom(dialog3.getWindow().getAttributes());
+                lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+                lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+                dialog3.show();
+                dialog3.getWindow().setAttributes(lp);
+                dialog3.setCanceledOnTouchOutside(false);
+
+                AutoCompleteTextView act = dialog3.findViewById(R.id.sea);
+                ListView li = dialog3.findViewById(R.id.li);
+
+                FirebaseFirestore.getInstance().collection("Users")
+                        .whereEqualTo("type", "1")
+                        .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                        List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                        ArrayList<UsersClass> drivers = new ArrayList<>();
+                        ArrayList<String> names = new ArrayList<>();
+
+                        for(int i=0; i<list.size(); i++){
+                            drivers.add(list.get(i).toObject(UsersClass.class));
+                            names.add(list.get(i).toObject(UsersClass.class).fullName); }
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(VisaActivity.this, android.R.layout.simple_spinner_dropdown_item, names);
+                        act.setAdapter(adapter);
+
+                        act.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                                int index = -1;
+                                for(int i=0; i<drivers.size(); i++)
+                                    if(drivers.get(i).fullName.equals(act.getText().toString()))
+                                        index = i;
+
+                                if(index != -1){
+                                    FirebaseFirestore.getInstance().collection("Requests")
+                                            .whereEqualTo("userId", drivers.get(index).id)
+                                            .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                                            ArrayList<RequestsClass> reqs = new ArrayList<>();
+                                            ArrayList<String> dates = new ArrayList<>();
+
+                                            Collections.reverse(list);
+
+                                            for(int i=0; i<list.size(); i++){
+                                                reqs.add(list.get(i).toObject(RequestsClass.class));
+                                                dates.add(list.get(i).toObject(RequestsClass.class).dateOfRequest); }
+
+                                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(VisaActivity.this, android.R.layout.simple_spinner_dropdown_item, dates);
+                                            li.setAdapter(adapter);
+
+                                            li.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                                @Override
+                                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                    name.setText(reqs.get(position).userName);
+                                                    req.setText(reqs.get(position).dateOfRequest);
+                                                    conf.setText(reqs.get(position).dateOfPermit);
+                                                    trans.setText(reqs.get(position).transId);
+
+                                                    if(requests.get(position).payment.equals("") || requests.get(position).payment.equals("0"))
+                                                        pconfirm.setSelection(1);
+                                                    else
+                                                        pconfirm.setSelection(0);
+
+                                                    uri111=Uri.parse(requests.get(position).img);
+                                                    Picasso.get().load(Uri.parse(requests.get(position).img)).into(img_dia1);
+                                                    dialog3.dismiss();
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                                else
+                                    Toast.makeText(VisaActivity.this, "لم يتم العثور على السائق", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
+                });
+
+            }
+        });
+
+        img_dia1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                new AlertDialog.Builder(VisaActivity.this)
+                        .setMessage("يرجى إختيار أسلوب الإدخال..")
+                        .setPositiveButton("الأستوديو", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent();
+                                intent.setType("image/*");
+                                intent.setAction(Intent.ACTION_GET_CONTENT);
+                                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1996);
+                            }
+                        }).setNegativeButton("الكاميرا", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        CaptureImage1();
+
+                    }
+                }).setNeutralButton("عرض الصورة", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ShowImageDialog a = new ShowImageDialog(index);
+                        a.show();
+                    }
+                }).create().show();
+
+            }
+        });
+
+        btn_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Map<String, Object> map = new HashMap<>();
+                map.put("userName", name.getText().toString());
+                map.put("dateOfRequest", req.getText().toString());
+                map.put("dateOfPermit", conf.getText().toString());
+
+                if(pconfirm.getSelectedItemPosition() == 0)
+                    map.put("payment", "1");
+                else
+                    map.put("payment", "0");
+
+                if(!DownloadUrl1.equals(""))
+                    map.put("img", DownloadUrl1);
+
+                if(trans.getText().toString().equals("")){
+                    trans.setText(classDate.currentTimeAtMs());
+                    map.put("transId", trans.getText().toString());
+                    map.put("userId", requests.get(index).userId);
+                    Toast.makeText(VisaActivity.this, "تم إضافة تأشيرة جديدة", Toast.LENGTH_SHORT).show(); }
+
+                FirebaseFirestore.getInstance().collection("Requests")
+                        .document(trans.getText().toString())
+                        .update(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(VisaActivity.this, "تم تعديل البيانات", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(VisaActivity.this, VisaActivity.class));
+                            finish(); }
+                        else
+                            Toast.makeText(VisaActivity.this, "حدث خطأ", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+            }
+        });
+
+    }
+
+    public void Search4(int index) {
+
+        if (requests == null)
+            return;
+        final AlertDialog.Builder builder = new AlertDialog.Builder((VisaActivity.this));
+        LayoutInflater inflater = (VisaActivity.this).getLayoutInflater();
+        builder.setView(inflater.inflate(R.layout.dialog_visa, null));
+        final AlertDialog dialog2 = builder.create();
+        ((FrameLayout) dialog2.getWindow().getDecorView().findViewById(android.R.id.content)).setForeground(new ColorDrawable(Color.TRANSPARENT));
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog2.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+        dialog2.show();
+        dialog2.getWindow().setAttributes(lp);
+        dialog2.setCanceledOnTouchOutside(false);
+
+        dialog2.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+
+                pictureImagePath1 = "";
+                bitmap1 = null;
+                DownloadUrl1 = "";
+                img_dia1 = null;
+            }
+        });
+
+        AutoCompleteTextView act = dialog2.findViewById(R.id.sea);
+        EditText name = dialog2.findViewById(R.id.txvDate1);
+        EditText req = dialog2.findViewById(R.id.txvDate12);
+        EditText conf = dialog2.findViewById(R.id.txvDate2);
+        EditText trans = dialog2.findViewById(R.id.txvDate3);
+
+        img_dia1 = dialog2.findViewById(R.id.imageView);
+
+        Spinner pconfirm = dialog2.findViewById(R.id.txvDate6);
+        Button btn_sea = dialog2.findViewById(R.id.btn_sea);
+        Button btn_edit = dialog2.findViewById(R.id.btn_edit);
+
+        if(index != -1){
+
+            name.setText(requests.get(index).userName);
+            req.setText(requests.get(index).dateOfRequest);
+            conf.setText(requests.get(index).dateOfPermit);
+            trans.setText(requests.get(index).transId);
+
+            if(requests.get(index).payment.equals("") || requests.get(index).payment.equals("0"))
+                pconfirm.setSelection(1);
+            else
+                pconfirm.setSelection(0);
+
+            Picasso.get().load(Uri.parse(requests.get(index).img)).into(img_dia1);
+
+        }
+        else
+            Toast.makeText(VisaActivity.this, "لم يتم العثور على الراكب", Toast.LENGTH_SHORT).show();
 
         btn_sea.setOnClickListener(new View.OnClickListener() {
             @Override
