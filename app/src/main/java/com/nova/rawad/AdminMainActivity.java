@@ -60,6 +60,7 @@ import com.google.firebase.storage.UploadTask;
 import com.luseen.spacenavigation.SpaceItem;
 import com.luseen.spacenavigation.SpaceNavigationView;
 import com.luseen.spacenavigation.SpaceOnClickListener;
+import com.nova.rawad.Users.UserLoginActivity;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
@@ -91,6 +92,8 @@ public class AdminMainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = shared.edit();
         editor.clear();
         editor.apply();
+
+        startActivity(new Intent(AdminMainActivity.this, UserLoginActivity.class));
 
     }
 

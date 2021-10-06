@@ -47,10 +47,10 @@ public class userDashboardActivity extends AppCompatActivity {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 try {
                     if (queryDocumentSnapshots.getDocuments().size()==0){
-                        txv1.setText("لم يتم التفعيل");
+                        txv1.setText("معلومات غير مكتملة");
                     }else {
                         if (queryDocumentSnapshots.getDocuments().get(0).get("office_state").equals("0")){
-                            txv1.setText("لم يتم التفعيل");
+                            txv1.setText("معلومات غير مؤكدة");
                         }else {
                             txv1.setVisibility(View.GONE);
                         }
@@ -66,10 +66,10 @@ public class userDashboardActivity extends AppCompatActivity {
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 try {
                     if (queryDocumentSnapshots.getDocuments().size()==0){
-                        txv2.setText("لم يتم التفعيل");
+                        txv2.setText("معلومات غير مكتملة");
                     }else {
                         if (queryDocumentSnapshots.getDocuments().get(0).get("office_state").equals("0")){
-                            txv2.setText("لم يتم التفعيل");
+                            txv2.setText("معلومات غير مؤكدة");
                         }else {
                             txv2.setVisibility(View.GONE);
                         }
@@ -82,14 +82,12 @@ public class userDashboardActivity extends AppCompatActivity {
     }
 
     public void onClickSignOut(View view) {
-        startActivity(new Intent(getApplicationContext(),AdminMainActivity.class));
-//        SharedPreferences.Editor editor = getSharedPreferences("User",MODE_PRIVATE).edit();
-//        editor.putString("fullName", "");
-//        editor.putString("phone", "");
-//        editor.putString("password", "" );
-//        editor.putString("id", "" );
-//        editor.apply();
-//        finish();
+        SharedPreferences shared = getSharedPreferences("User",MODE_PRIVATE);
+        SharedPreferences.Editor editor = shared.edit();
+        editor.clear();
+        editor.apply();
+
+        startActivity(new Intent(userDashboardActivity.this, UserLoginActivity.class));
     }
 
     public void onClickPassport(View view) {

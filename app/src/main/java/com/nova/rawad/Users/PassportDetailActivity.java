@@ -238,12 +238,12 @@ public class PassportDetailActivity extends AppCompatActivity {
             map.put("office_state","0");
             FirebaseFirestore.getInstance().collection("DriverPassports")
                     .document(getSharedPreferences("User",MODE_PRIVATE).getString("id",""))
-                    .update(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    .set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     progressDialog.dismiss();
                     if (task.isSuccessful()){
-                        Toast.makeText(getApplicationContext(), "تم الحفظ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "تحديث الحالة عند اعادة الدخول", Toast.LENGTH_LONG).show();
                         finish();
                     }else {
                         Toast.makeText(getApplicationContext(), "خطأ في عملية الحفظ الرجاء المحاولة مرة اخرى", Toast.LENGTH_SHORT).show();

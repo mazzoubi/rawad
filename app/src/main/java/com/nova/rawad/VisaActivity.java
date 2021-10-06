@@ -361,7 +361,7 @@ public class VisaActivity extends AppCompatActivity {
                 }).setNeutralButton("عرض الصورة", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ShowImageDialog a = new ShowImageDialog(uri111);
+                        ShowImageDialog a = new ShowImageDialog(Uri.parse(requests.get(index).img));
                         a.show();
                     }
                 }).create().show();
@@ -593,7 +593,7 @@ public class VisaActivity extends AppCompatActivity {
                 }).setNeutralButton("عرض الصورة", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ShowImageDialog a = new ShowImageDialog(uri111);
+                        ShowImageDialog a = new ShowImageDialog(Uri.parse(requests.get(index).img));
                         a.show();
                     }
                 }).create().show();
@@ -784,6 +784,7 @@ public class VisaActivity extends AppCompatActivity {
             setContentView(R.layout.dialog_show_image);
             imageView = findViewById(R.id.imageViewMain);
             Picasso.get().load(ur).into(imageView);
+            Toast.makeText(c, "", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -8,7 +8,8 @@
 
     <Button
         android:id="@+id/button6"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_margin="5dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
         android:onClick="onClickRequest"
@@ -19,8 +20,9 @@
 
     <Button
         android:id="@+id/button9"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:onClick="onClickMyRequest"
         android:text="طلباتي"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,8 +31,9 @@
 
     <Button
         android:id="@+id/button8"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
         android:text="ركاب بالانتظار"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
