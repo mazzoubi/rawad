@@ -361,7 +361,7 @@ public class VisaActivity extends AppCompatActivity {
                 }).setNeutralButton("عرض الصورة", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ShowImageDialog a = new ShowImageDialog(index);
+                        ShowImageDialog a = new ShowImageDialog(uri111);
                         a.show();
                     }
                 }).create().show();
@@ -593,7 +593,7 @@ public class VisaActivity extends AppCompatActivity {
                 }).setNeutralButton("عرض الصورة", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        ShowImageDialog a = new ShowImageDialog(index);
+                        ShowImageDialog a = new ShowImageDialog(uri111);
                         a.show();
                     }
                 }).create().show();
@@ -766,13 +766,15 @@ public class VisaActivity extends AppCompatActivity {
         showDateFrom();
     }
 
+
+    // mahdawi mehdawi مهداوي
     public class ShowImageDialog extends Dialog {
         Activity c ;
-        int i ;
-        public ShowImageDialog(int i ){
+        Uri ur ;
+        public ShowImageDialog(Uri ur ){
             super(VisaActivity.this);
             c=VisaActivity.this;
-            this.i = i;
+            this.ur = ur;
         }
 
         PhotoView imageView ;
@@ -781,7 +783,7 @@ public class VisaActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.dialog_show_image);
             imageView = findViewById(R.id.imageViewMain);
-            Picasso.get().load(Uri.parse(requests.get(i).img)).into(imageView);
+            Picasso.get().load(ur).into(imageView);
         }
     }
 
