@@ -7,15 +7,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.nova.rawad.PassengerPassportsClass;
 import com.nova.rawad.R;
 
 import java.util.ArrayList;
 
-public class RequestAdapter extends ArrayAdapter<String> {
+public class RequestAdapter extends ArrayAdapter<PassengerPassportsClass> {
 
-    String a ;
+    PassengerPassportsClass a ;
 
-    public RequestAdapter(Context context, int view, ArrayList<String> arrayList){
+    public RequestAdapter(Context context, int view, ArrayList<PassengerPassportsClass> arrayList){
         super(context,view,arrayList);
     }
 
@@ -25,12 +26,21 @@ public class RequestAdapter extends ArrayAdapter<String> {
         LayoutInflater layoutInflater=LayoutInflater.from(getContext());
         View myView = layoutInflater.inflate(R.layout.row_request_adapter,parent,false);
 
-       // TextView text=myView.findViewById(R.id.txvText);
+        TextView textSerial=myView.findViewById(R.id.textView38);
+        TextView textName=myView.findViewById(R.id.textView37);
+        TextView textMother=myView.findViewById(R.id.textView36);
+        TextView textNum=myView.findViewById(R.id.textView35);
+        TextView textIss=myView.findViewById(R.id.textView34);
 
         a=getItem(position);
 
        // text.setText(a);
 
+        textIss.setText(a.p_issue);
+        textSerial.setText(position+"");
+        textName.setText(a.p_name);
+        textMother.setText("mother");
+        textNum.setText(a.p_num);
         return myView ;
     }
 }

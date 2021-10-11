@@ -1,13 +1,25 @@
 package com.nova.rawad.Users;
 
+import static android.media.MediaScannerConnection.*;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.pdf.PdfDocument;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,6 +31,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -40,10 +53,15 @@ import com.nova.rawad.classDate;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Request;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class Trip2Activity extends AppCompatActivity {
     
@@ -51,7 +69,7 @@ public class Trip2Activity extends AppCompatActivity {
     ArrayList<TrpipClass> trips = null;
     AutoCompleteTextView act;
     EditText name, d_id, req, conf;
-    Button btn_sea;
+    Button btn_sea,btn_print;
     
     Request request ;
 
@@ -73,6 +91,15 @@ public class Trip2Activity extends AppCompatActivity {
         conf = findViewById(R.id.txvDate2);
         d_id = findViewById(R.id.txvDate4);
         btn_sea = findViewById(R.id.btn_sea);
+        btn_print = findViewById(R.id.print);
+
+        btn_print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowManifest a =new ShowManifest();
+                a.show();
+            }
+        });
 
         FirebaseFirestore.getInstance().collection("PassengerPassports")
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -388,5 +415,128 @@ public class Trip2Activity extends AppCompatActivity {
             imageView = findViewById(R.id.imageViewMain);
             Picasso.get().load(urrri).into(imageView);
         }
+    }
+
+    public class ShowManifest extends Dialog{
+
+        public ShowManifest(){
+            super(Trip2Activity.this);
+        }
+
+
+        ScrollView scrollView ;
+        Button share ;
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.dialog_manifest);
+            scrollView = findViewById(R.id.scrollView);
+            share = findViewById(R.id.button11);
+            share.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bitmap bitmap = getBitmapFromView(scrollView,
+                            scrollView.getChildAt(0).getHeight(),
+                            scrollView.getChildAt(0).getWidth());
+                    //SaveImage(bitmap);
+                    createPdf(bitmap);
+                }
+            });
+
+        }
+
+        private void SaveImage(Bitmap finalBitmap) {
+
+            String root = Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_PICTURES).toString();
+            File myDir = new File(root + "/saved_images");
+            myDir.mkdirs();
+            Random generator = new Random();
+
+            int n = 10000;
+            n = generator.nextInt(n);
+            String fname = "Image-"+ n +".jpg";
+            File file = new File (myDir, fname);
+            if (file.exists ()) file.delete ();
+            try {
+                FileOutputStream out = new FileOutputStream(file);
+                finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                // sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED,
+                //     Uri.parse("file://"+ Environment.getExternalStorageDirectory())));
+                out.flush();
+                out.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+// Tell the media scanner about the new file so that it is
+// immediately available to the user.
+            scanFile(Trip2Activity.this, new String[]{file.toString()}, null,
+                    new OnScanCompletedListener() {
+                        public void onScanCompleted(String path, Uri uri) {
+
+                        }
+                    });
+        }
+
+        //create bitmap from the ScrollView
+        private Bitmap getBitmapFromView(View view, int height, int width) {
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            Drawable bgDrawable = view.getBackground();
+            if (bgDrawable != null)
+                bgDrawable.draw(canvas);
+            else
+                canvas.drawColor(Color.WHITE);
+            view.draw(canvas);
+            return bitmap;
+        }
+    }
+
+    private void createPdf(Bitmap bitmap){
+        WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        float hight = displaymetrics.heightPixels ;
+        float width = displaymetrics.widthPixels ;
+
+        int convertHighet = (int) hight, convertWidth = (int) width;
+
+//        Resources mResources = getResources();
+//        Bitmap bitmap = BitmapFactory.decodeResource(mResources, R.drawable.screenshot);
+
+        PdfDocument document = new PdfDocument();
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(bitmap.getWidth(), bitmap.getHeight(), 1).create();
+        PdfDocument.Page page = document.startPage(pageInfo);
+
+        Canvas canvas = page.getCanvas();
+
+
+        Paint paint = new Paint();
+        paint.setColor(Color.parseColor("#ffffff"));
+        canvas.drawPaint(paint);
+
+
+
+        bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
+
+        paint.setColor(Color.BLUE);
+        canvas.drawBitmap(bitmap, 0, 0 , null);
+        document.finishPage(page);
+
+
+        // write the document content
+        String targetPdf = "/sdcard/test.pdf";
+        File filePath = new File(targetPdf);
+        try {
+            document.writeTo(new FileOutputStream(filePath));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Something wrong: " + e.toString(), Toast.LENGTH_LONG).show();
+        }
+
+        // close the document
+        document.close();
     }
 }

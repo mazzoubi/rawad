@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/drawable/shape33.xml" value="0.2703125" />
         <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_car_detail.xml" value="0.264" />
         <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_login_screen.xml" value="0.264" />
         <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_main2.xml" value="0.23854166666666668" />
@@ -19,10 +20,12 @@
         <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_user_login.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/activity_visa.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/dialog_driver_search.xml" value="0.23854166666666668" />
+        <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/dialog_manifest.xml" value="0.4" />
+        <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/dialog_passenger_passport_view.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/dialog_show_image.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/dialog_visa.xml" value="0.23854166666666668" />
         <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/dialog_visa2.xml" value="0.25416666666666665" />
-        <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/row_request_adapter.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/DELL/Desktop/SmartDetectorSystem/SmartDetectorSystem/app/src/main/res/layout/row_request_adapter.xml" value="0.4" />
       </map>
     </option>
   </component>
