@@ -58,7 +58,7 @@ public class UserLoginActivity extends AppCompatActivity {
             }
         }
         edtPhone = findViewById(R.id.edtPhone);
-        edtPassword = findViewById(R.id.edtPassword);
+        edtPassword = findViewById(R.id.edtpass);
     }
     public void onClickLogin(View view) {
         if (edtPhone.getText().toString().isEmpty()){
@@ -66,6 +66,7 @@ public class UserLoginActivity extends AppCompatActivity {
         }else {
             FirebaseFirestore.getInstance().collection("Users")
                     .whereEqualTo("phone",edtPhone.getText().toString())
+                    .whereEqualTo("password", edtPassword.getText().toString())
                     .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -79,9 +80,23 @@ public class UserLoginActivity extends AppCompatActivity {
                         userClass.password = queryDocumentSnapshots.getDocuments().get(0).getString("password");
                         userClass.type = queryDocumentSnapshots.getDocuments().get(0).getString("type");
 
-                        OtpDialog a = new OtpDialog();
-                        a.setCancelable(false);
-                        a.show();
+                        SharedPreferences.Editor editor = getSharedPreferences("User",MODE_PRIVATE).edit();
+                        editor.putString("fullName", userClass.fullName);
+                        editor.putString("phone", userClass.phone);
+                        editor.putString("password", userClass.password );
+                        editor.putString("id", userClass.id );
+                        editor.putString("type", userClass.type );
+
+                        if (userClass.type.equals("0")){
+                            startActivity(new Intent(UserLoginActivity.this, AdminMainActivity.class));
+                            finish();
+                        }else if (userClass.type.equals("1")){
+                            startActivity(new Intent(UserLoginActivity.this,userDashboardActivity.class));
+                            finish();
+                        }
+//                        OtpDialog a = new OtpDialog();
+//                        a.setCancelable(false);
+//                        a.show();
                     }
                 }
             });
